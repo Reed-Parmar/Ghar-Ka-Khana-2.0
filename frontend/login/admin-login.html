@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Ghar Ka Khana</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">🏠</span>
+        Ghar Ka Khana
+      </a>
+      
+      <div class="nav-actions">
+        <a href="../index.html" class="btn btn-secondary">Back to Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="auth-container">
+    <div class="auth-wrapper">
+      <div class="auth-image-section admin-theme">
+        <div class="auth-image-content">
+          <h2>Admin Portal</h2>
+          <p>Manage the platform, oversee operations, and ensure quality.</p>
+          <div class="auth-features">
+            <div class="feature-item">
+              <span class="feature-icon">🛡️</span>
+              <span>Platform Management</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📈</span>
+              <span>Analytics Dashboard</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">✓</span>
+              <span>Quality Control</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-form-section">
+        <div class="auth-form-content">
+          <div class="auth-header">
+            <h1>Admin Login</h1>
+            <p>Secure access to admin dashboard</p>
+          </div>
+
+          <form class="auth-form" id="adminLoginForm">
+            <div class="form-group">
+              <label for="email">Admin Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="admin@gharkakhana.com"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Enter admin password"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="otp">Two-Factor Authentication Code</label>
+              <input 
+                type="text" 
+                id="otp" 
+                name="otp" 
+                placeholder="Enter 6-digit code"
+                maxlength="6"
+                pattern="[0-9]{6}"
+              >
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Access Admin Panel</button>
+          </form>
+
+          <div class="auth-security-notice">
+            <p>🔒 This is a secure admin area. All access is logged and monitored.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+</body>
+</html>

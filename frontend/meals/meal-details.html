@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paneer Butter Masala - Ghar Ka Khana</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/meals.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">🏠</span>
+        Ghar Ka Khana
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../order/browse-meals.html">Browse Meals</a></li>
+        <li><a href="../pickup/pickup-info.html">Pickup Info</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <a href="../login/user-login.html" class="btn btn-secondary">Login</a>
+        <button class="btn btn-primary cart-btn">
+          🛒 Cart <span class="cart-count">0</span>
+        </button>
+      </div>
+      
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <main class="meal-details-page">
+    <div class="breadcrumb">
+      <div class="section-container">
+        <a href="../index.html">Home</a> / 
+        <a href="../order/browse-meals.html">Browse Meals</a> / 
+        <span>Paneer Butter Masala</span>
+      </div>
+    </div>
+
+    <section class="meal-detail-section">
+      <div class="section-container">
+        <div class="meal-detail-grid">
+          <div class="meal-images">
+            <div class="main-image">
+              <img src="/placeholder.svg?height=500&width=600" alt="Paneer Butter Masala" id="mainImage">
+              <button class="wishlist-btn-large">♡ Add to Wishlist</button>
+            </div>
+            <div class="image-thumbnails">
+              <img src="/placeholder.svg?height=100&width=100" alt="Thumbnail 1" class="thumbnail active">
+              <img src="/placeholder.svg?height=100&width=100" alt="Thumbnail 2" class="thumbnail">
+              <img src="/placeholder.svg?height=100&width=100" alt="Thumbnail 3" class="thumbnail">
+              <img src="/placeholder.svg?height=100&width=100" alt="Thumbnail 4" class="thumbnail">
+            </div>
+          </div>
+
+          <div class="meal-info">
+            <div class="meal-badges-row">
+              <span class="meal-badge badge-veg">
+                <span class="badge-icon"></span>
+                Vegetarian
+              </span>
+              <span class="availability-badge available">Available for Tomorrow</span>
+            </div>
+
+            <h1 class="meal-detail-title">Paneer Butter Masala</h1>
+            
+            <div class="rating-section">
+              <div class="stars-large">
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+              </div>
+              <span class="rating-number">4.9</span>
+              <span class="rating-count">(127 reviews)</span>
+            </div>
+
+            <div class="price-section">
+              <span class="current-price">₹120</span>
+              <span class="original-price">₹150</span>
+              <span class="discount-badge">20% OFF</span>
+            </div>
+
+            <p class="meal-detail-description">
+              Indulge in our creamy and rich Paneer Butter Masala, made with fresh cottage cheese cubes simmered in a tomato-based gravy with butter and cream. Served with 2 butter naans and aromatic jeera rice. This authentic North Indian dish is prepared with love using traditional family recipes.
+            </p>
+
+            <div class="meal-specs">
+              <div class="spec-item">
+                <span class="spec-icon">🍽️</span>
+                <div>
+                  <strong>Serves</strong>
+                  <p>1 Person</p>
+                </div>
+              </div>
+              <div class="spec-item">
+                <span class="spec-icon">⏱️</span>
+                <div>
+                  <strong>Prep Time</strong>
+                  <p>Fresh on order</p>
+                </div>
+              </div>
+              <div class="spec-item">
+                <span class="spec-icon">🌶️</span>
+                <div>
+                  <strong>Spice Level</strong>
+                  <p>Medium</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="includes-section">
+              <h3>What's Included:</h3>
+              <ul class="includes-list">
+                <li>✓ Paneer Butter Masala (250g)</li>
+                <li>✓ 2 Butter Naans</li>
+                <li>✓ Jeera Rice (200g)</li>
+                <li>✓ Green Salad</li>
+                <li>✓ Mint Chutney</li>
+              </ul>
+            </div>
+
+            <div class="quantity-section">
+              <label>Quantity:</label>
+              <div class="quantity-controls">
+                <button class="qty-btn" id="decreaseQty">-</button>
+                <input type="number" id="quantity" value="1" min="1" max="10" readonly>
+                <button class="qty-btn" id="increaseQty">+</button>
+              </div>
+              <span class="stock-info">Only 5 left!</span>
+            </div>
+
+            <div class="action-buttons">
+              <button class="btn btn-primary btn-large add-to-cart-btn">
+                Add to Cart - ₹120
+              </button>
+              <button class="btn btn-secondary btn-large" onclick="window.location.href='../order/checkout.html'">
+                Buy Now
+              </button>
+            </div>
+
+            <div class="chef-card">
+              <div class="chef-card-header">
+                <img src="/placeholder.svg?height=60&width=60" alt="Chef" class="chef-avatar-large">
+                <div class="chef-card-info">
+                  <h4>Priya's Mom</h4>
+                  <div class="chef-rating">
+                    <span class="star">★</span>
+                    <span>4.9</span>
+                    <span class="chef-meals-count">• 45 meals</span>
+                  </div>
+                </div>
+              </div>
+              <p class="chef-bio">
+                Specializing in authentic North Indian cuisine with 20+ years of cooking experience. Known for rich gravies and perfect rotis!
+              </p>
+              <button class="btn btn-outline btn-small">View Chef Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-additional-info">
+          <div class="info-tabs">
+            <button class="tab-btn active" data-tab="description">Description</button>
+            <button class="tab-btn" data-tab="ingredients">Ingredients</button>
+            <button class="tab-btn" data-tab="nutrition">Nutrition</button>
+            <button class="tab-btn" data-tab="reviews">Reviews (127)</button>
+          </div>
+
+          <div class="tab-content active" id="description">
+            <h3>About This Meal</h3>
+            <p>
+              Our Paneer Butter Masala is a beloved North Indian classic that brings the authentic taste of home-cooked food right to your campus. Made with fresh paneer (cottage cheese) that's marinated and cooked in a rich, creamy tomato-based gravy infused with aromatic spices, butter, and cream.
+            </p>
+            <p>
+              The dish is perfectly balanced with the right amount of spices and sweetness, making it a crowd favorite. Served with freshly made butter naans and fragrant jeera rice, this meal is complete comfort food that reminds you of home.
+            </p>
+            <h4>Perfect For:</h4>
+            <ul>
+              <li>Lunch or Dinner</li>
+              <li>Special occasions or treating yourself</li>
+              <li>Sharing with friends (can be split between 2 people)</li>
+            </ul>
+          </div>
+
+          <div class="tab-content" id="ingredients">
+            <h3>Ingredients</h3>
+            <div class="ingredients-grid">
+              <div class="ingredient-category">
+                <h4>For Paneer Butter Masala:</h4>
+                <ul>
+                  <li>Fresh Paneer</li>
+                  <li>Tomatoes</li>
+                  <li>Onions</li>
+                  <li>Butter & Cream</li>
+                  <li>Ginger-Garlic Paste</li>
+                  <li>Kashmiri Red Chili</li>
+                  <li>Garam Masala</li>
+                  <li>Kasuri Methi</li>
+                </ul>
+              </div>
+              <div class="ingredient-category">
+                <h4>For Naan & Rice:</h4>
+                <ul>
+                  <li>All-Purpose Flour</li>
+                  <li>Yogurt</li>
+                  <li>Butter</li>
+                  <li>Basmati Rice</li>
+                  <li>Cumin Seeds</li>
+                  <li>Ghee</li>
+                </ul>
+              </div>
+            </div>
+            <p class="allergen-info">
+              <strong>Allergen Information:</strong> Contains dairy (paneer, butter, cream, yogurt). Gluten (naan).
+            </p>
+          </div>
+
+          <div class="tab-content" id="nutrition">
+            <h3>Nutritional Information</h3>
+            <p class="serving-info">Per Serving (Complete Meal)</p>
+            <div class="nutrition-grid">
+              <div class="nutrition-item">
+                <span class="nutrition-label">Calories</span>
+                <span class="nutrition-value">650 kcal</span>
+              </div>
+              <div class="nutrition-item">
+                <span class="nutrition-label">Protein</span>
+                <span class="nutrition-value">25g</span>
+              </div>
+              <div class="nutrition-item">
+                <span class="nutrition-label">Carbohydrates</span>
+                <span class="nutrition-value">75g</span>
+              </div>
+              <div class="nutrition-item">
+                <span class="nutrition-label">Fat</span>
+                <span class="nutrition-value">28g</span>
+              </div>
+              <div class="nutrition-item">
+                <span class="nutrition-label">Fiber</span>
+                <span class="nutrition-value">6g</span>
+              </div>
+              <div class="nutrition-item">
+                <span class="nutrition-label">Sodium</span>
+                <span class="nutrition-value">890mg</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="reviews">
+            <div class="reviews-header">
+              <h3>Customer Reviews</h3>
+              <div class="rating-summary">
+                <div class="rating-average">
+                  <span class="rating-number-large">4.9</span>
+                  <div>
+                    <div class="stars-large">
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                    </div>
+                    <p>Based on 127 reviews</p>
+                  </div>
+                </div>
+                <div class="rating-bars">
+                  <div class="rating-bar-item">
+                    <span>5★</span>
+                    <div class="rating-bar">
+                      <div class="rating-bar-fill" style="width: 85%"></div>
+                    </div>
+                    <span>108</span>
+                  </div>
+                  <div class="rating-bar-item">
+                    <span>4★</span>
+                    <div class="rating-bar">
+                      <div class="rating-bar-fill" style="width: 10%"></div>
+                    </div>
+                    <span>13</span>
+                  </div>
+                  <div class="rating-bar-item">
+                    <span>3★</span>
+                    <div class="rating-bar">
+                      <div class="rating-bar-fill" style="width: 3%"></div>
+                    </div>
+                    <span>4</span>
+                  </div>
+                  <div class="rating-bar-item">
+                    <span>2★</span>
+                    <div class="rating-bar">
+                      <div class="rating-bar-fill" style="width: 1%"></div>
+                    </div>
+                    <span>1</span>
+                  </div>
+                  <div class="rating-bar-item">
+                    <span>1★</span>
+                    <div class="rating-bar">
+                      <div class="rating-bar-fill" style="width: 1%"></div>
+                    </div>
+                    <span>1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="reviews-list">
+              <div class="review-item">
+                <div class="review-header">
+                  <img src="/placeholder.svg?height=48&width=48" alt="Reviewer" class="reviewer-avatar">
+                  <div class="reviewer-info">
+                    <h4>Arjun Sharma</h4>
+                    <div class="review-stars">
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                    </div>
+                    <p class="review-date">2 days ago</p>
+                  </div>
+                </div>
+                <p class="review-text">
+                  Absolutely delicious! The paneer was so soft and the gravy was perfectly creamy. The naans were fresh and buttery. Reminded me of my mom's cooking. Will definitely order again!
+                </p>
+                <div class="review-helpful">
+                  <button class="helpful-btn">👍 Helpful (24)</button>
+                </div>
+              </div>
+
+              <div class="review-item">
+                <div class="review-header">
+                  <img src="/placeholder.svg?height=48&width=48" alt="Reviewer" class="reviewer-avatar">
+                  <div class="reviewer-info">
+                    <h4>Sneha Patel</h4>
+                    <div class="review-stars">
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                    </div>
+                    <p class="review-date">5 days ago</p>
+                  </div>
+                </div>
+                <p class="review-text">
+                  Best paneer butter masala I've had on campus! The portion size is generous and the taste is authentic. Priya's mom is an amazing chef. Highly recommend!
+                </p>
+                <div class="review-helpful">
+                  <button class="helpful-btn">👍 Helpful (18)</button>
+                </div>
+              </div>
+
+              <div class="review-item">
+                <div class="review-header">
+                  <img src="/placeholder.svg?height=48&width=48" alt="Reviewer" class="reviewer-avatar">
+                  <div class="reviewer-info">
+                    <h4>Vikram Singh</h4>
+                    <div class="review-stars">
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">★</span>
+                      <span class="star">☆</span>
+                    </div>
+                    <p class="review-date">1 week ago</p>
+                  </div>
+                </div>
+                <p class="review-text">
+                  Great taste and quality! Only reason for 4 stars is I wish there was a bit more gravy. But overall, excellent meal and worth the price.
+                </p>
+                <div class="review-helpful">
+                  <button class="helpful-btn">👍 Helpful (12)</button>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-outline">Load More Reviews</button>
+          </div>
+        </div>
+
+        <div class="similar-meals">
+          <h2>You May Also Like</h2>
+          <div class="meals-grid">
+            <div class="meal-card">
+              <div class="meal-image-container">
+                <img src="/placeholder.svg?height=200&width=300" alt="Dal Makhani" class="meal-image">
+                <span class="meal-badge badge-veg">
+                  <span class="badge-icon"></span>
+                  Veg
+                </span>
+              </div>
+              <div class="meal-content">
+                <div class="meal-header">
+                  <h3 class="meal-title">Dal Makhani</h3>
+                  <span class="meal-price">₹110</span>
+                </div>
+                <div class="meal-meta">
+                  <div class="chef-info">
+                    <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                    <span class="chef-name">Priya's Mom</span>
+                  </div>
+                  <div class="meal-rating">
+                    <span class="star">★</span>
+                    <span class="rating-text">4.8</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="meal-card">
+              <div class="meal-image-container">
+                <img src="/placeholder.svg?height=200&width=300" alt="Butter Chicken" class="meal-image">
+                <span class="meal-badge badge-non-veg">
+                  <span class="badge-icon"></span>
+                  Non-Veg
+                </span>
+              </div>
+              <div class="meal-content">
+                <div class="meal-header">
+                  <h3 class="meal-title">Butter Chicken</h3>
+                  <span class="meal-price">₹145</span>
+                </div>
+                <div class="meal-meta">
+                  <div class="chef-info">
+                    <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                    <span class="chef-name">Rahul's Mom</span>
+                  </div>
+                  <div class="meal-rating">
+                    <span class="star">★</span>
+                    <span class="rating-text">4.9</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="meal-card">
+              <div class="meal-image-container">
+                <img src="/placeholder.svg?height=200&width=300" alt="Palak Paneer" class="meal-image">
+                <span class="meal-badge badge-veg">
+                  <span class="badge-icon"></span>
+                  Veg
+                </span>
+              </div>
+              <div class="meal-content">
+                <div class="meal-header">
+                  <h3 class="meal-title">Palak Paneer</h3>
+                  <span class="meal-price">₹115</span>
+                </div>
+                <div class="meal-meta">
+                  <div class="chef-info">
+                    <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                    <span class="chef-name">Anjali's Mom</span>
+                  </div>
+                  <div class="meal-rating">
+                    <span class="star">★</span>
+                    <span class="rating-text">4.7</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🏠 Ghar Ka Khana</h3>
+          <p>Connecting students with the warmth of home-cooked meals.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../order/browse-meals.html">Browse Meals</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>For Chefs</h4>
+          <ul class="footer-links">
+            <li><a href="../register/chef-register.html">Become a Chef</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Ghar Ka Khana. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/meal-details.js"></script>
+</body>
+</html>

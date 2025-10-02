@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login - Ghar Ka Khana</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">🏠</span>
+        Ghar Ka Khana
+      </a>
+      
+      <div class="nav-actions">
+        <a href="../index.html" class="btn btn-secondary">Back to Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="auth-container">
+    <div class="auth-wrapper">
+      <div class="auth-image-section">
+        <div class="auth-image-content">
+          <h2>Welcome Back!</h2>
+          <p>Login to order delicious home-cooked meals from your fellow students' families.</p>
+          <div class="auth-features">
+            <div class="feature-item">
+              <span class="feature-icon">🍛</span>
+              <span>Fresh Daily Meals</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">⚡</span>
+              <span>Quick Ordering</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">💰</span>
+              <span>Student Friendly Prices</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-form-section">
+        <div class="auth-form-content">
+          <div class="auth-header">
+            <h1>Student Login</h1>
+            <p>Enter your credentials to access your account</p>
+          </div>
+
+          <form class="auth-form" id="userLoginForm">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="your.email@college.edu"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Enter your password"
+                required
+              >
+            </div>
+
+            <div class="form-options">
+              <label class="checkbox-label">
+                <input type="checkbox" name="remember">
+                <span>Remember me</span>
+              </label>
+              <a href="#" class="forgot-link">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Login</button>
+          </form>
+
+          <div class="auth-divider">
+            <span>or</span>
+          </div>
+
+          <div class="auth-alternatives">
+            <p>Don't have an account? <a href="../register/user-register.html">Sign up as Student</a></p>
+            <p class="role-switch">Are you a chef? <a href="chef-login.html">Login as Chef</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Meal - Chef Dashboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/chef.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">🏠</span>
+        Ghar Ka Khana
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="chef-upload.html" class="active">Upload Meal</a></li>
+        <li><a href="#my-meals">My Meals</a></li>
+        <li><a href="#orders">Orders</a></li>
+        <li><a href="#earnings">Earnings</a></li>
+        <li><a href="#profile">Profile</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <div class="chef-profile-btn">
+          <img src="/placeholder.svg?height=40&width=40" alt="Chef" class="nav-avatar">
+          <span>Priya's Mom</span>
+        </div>
+      </div>
+      
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <main class="chef-dashboard">
+    <div class="dashboard-container">
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+          <h3>Chef Dashboard</h3>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="chef-upload.html" class="sidebar-link active">
+            <span class="sidebar-icon">➕</span>
+            Upload New Meal
+          </a>
+          <a href="#my-meals" class="sidebar-link">
+            <span class="sidebar-icon">🍽️</span>
+            My Meals
+          </a>
+          <a href="#orders" class="sidebar-link">
+            <span class="sidebar-icon">📦</span>
+            Orders
+            <span class="badge">3</span>
+          </a>
+          <a href="#earnings" class="sidebar-link">
+            <span class="sidebar-icon">💰</span>
+            Earnings
+          </a>
+          <a href="#analytics" class="sidebar-link">
+            <span class="sidebar-icon">📊</span>
+            Analytics
+          </a>
+          <a href="#profile" class="sidebar-link">
+            <span class="sidebar-icon">👤</span>
+            Profile Settings
+          </a>
+        </nav>
+
+        <div class="sidebar-stats">
+          <h4>Quick Stats</h4>
+          <div class="stat-item">
+            <span class="stat-label">Total Meals</span>
+            <span class="stat-value">45</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">This Week</span>
+            <span class="stat-value">12</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Rating</span>
+            <span class="stat-value">4.9 ★</span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="dashboard-main">
+        <div class="page-header">
+          <div>
+            <h1>Upload New Meal</h1>
+            <p>Add a delicious meal for tomorrow's menu</p>
+          </div>
+          <button class="btn btn-outline" onclick="window.location.href='#my-meals'">
+            View My Meals
+          </button>
+        </div>
+
+        <div class="upload-form-container">
+          <form class="meal-upload-form" id="mealUploadForm">
+            <div class="form-section">
+              <h3 class="section-title">Basic Information</h3>
+              
+              <div class="form-group">
+                <label for="mealName">Meal Name *</label>
+                <input 
+                  type="text" 
+                  id="mealName" 
+                  name="mealName" 
+                  placeholder="e.g., Paneer Butter Masala"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea 
+                  id="description" 
+                  name="description" 
+                  rows="4"
+                  placeholder="Describe your meal, ingredients, and what makes it special..."
+                  required
+                ></textarea>
+                <small>Be descriptive! Students love to know what they're ordering.</small>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="cuisine">Cuisine Type *</label>
+                  <select id="cuisine" name="cuisine" required>
+                    <option value="">Select cuisine</option>
+                    <option value="north-indian">North Indian</option>
+                    <option value="south-indian">South Indian</option>
+                    <option value="bengali">Bengali</option>
+                    <option value="punjabi">Punjabi</option>
+                    <option value="gujarati">Gujarati</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="continental">Continental</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="mealType">Meal Type *</label>
+                  <select id="mealType" name="mealType" required>
+                    <option value="">Select type</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="snack">Snack</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Dietary Preference *</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="dietary" value="veg" required>
+                    <span class="radio-custom veg"></span>
+                    Vegetarian
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="dietary" value="non-veg" required>
+                    <span class="radio-custom non-veg"></span>
+                    Non-Vegetarian
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="dietary" value="vegan" required>
+                    <span class="radio-custom vegan"></span>
+                    Vegan
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="spiceLevel">Spice Level *</label>
+                <div class="spice-selector">
+                  <input type="range" id="spiceLevel" name="spiceLevel" min="1" max="5" value="3">
+                  <div class="spice-labels">
+                    <span>Mild</span>
+                    <span>Medium</span>
+                    <span>Hot</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">Pricing & Quantity</h3>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="price">Price per Serving (₹) *</label>
+                  <input 
+                    type="number" 
+                    id="price" 
+                    name="price" 
+                    placeholder="120"
+                    min="50"
+                    max="500"
+                    required
+                  >
+                  <small>Platform commission: 10% (You'll receive ₹<span id="chefEarning">108</span>)</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="quantity">Available Quantity *</label>
+                  <input 
+                    type="number" 
+                    id="quantity" 
+                    name="quantity" 
+                    placeholder="10"
+                    min="1"
+                    max="50"
+                    required
+                  >
+                  <small>How many servings can you prepare?</small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="servingSize">Serving Size *</label>
+                <select id="servingSize" name="servingSize" required>
+                  <option value="">Select serving size</option>
+                  <option value="1">Serves 1 person</option>
+                  <option value="2">Serves 2 people</option>
+                  <option value="family">Family pack (4+ people)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">What's Included</h3>
+              
+              <div class="form-group">
+                <label>Meal Components *</label>
+                <div id="componentsContainer">
+                  <div class="component-item">
+                    <input 
+                      type="text" 
+                      name="component[]" 
+                      placeholder="e.g., Paneer Butter Masala (250g)"
+                      required
+                    >
+                    <button type="button" class="btn-icon remove-component" disabled>✕</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-small" id="addComponent">
+                  + Add Component
+                </button>
+              </div>
+
+              <div class="form-group">
+                <label for="allergens">Allergen Information</label>
+                <input 
+                  type="text" 
+                  id="allergens" 
+                  name="allergens" 
+                  placeholder="e.g., Contains dairy, nuts"
+                >
+                <small>Help students with dietary restrictions</small>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">Images</h3>
+              
+              <div class="form-group">
+                <label>Meal Photos *</label>
+                <div class="image-upload-area" id="imageUploadArea">
+                  <div class="upload-placeholder">
+                    <span class="upload-icon">📷</span>
+                    <p>Click to upload or drag and drop</p>
+                    <small>PNG, JPG up to 5MB (Max 4 images)</small>
+                  </div>
+                  <input 
+                    type="file" 
+                    id="mealImages" 
+                    name="mealImages" 
+                    accept="image/*"
+                    multiple
+                    hidden
+                  >
+                </div>
+                <div class="image-preview-container" id="imagePreviewContainer"></div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">Availability</h3>
+              
+              <div class="form-group">
+                <label for="availableDate">Available For *</label>
+                <input 
+                  type="date" 
+                  id="availableDate" 
+                  name="availableDate" 
+                  required
+                >
+                <small>Meals must be ordered at least 1 day in advance</small>
+              </div>
+
+              <div class="form-group">
+                <label for="pickupTime">Pickup Time Window *</label>
+                <div class="time-range">
+                  <input 
+                    type="time" 
+                    id="pickupTimeStart" 
+                    name="pickupTimeStart" 
+                    required
+                  >
+                  <span>to</span>
+                  <input 
+                    type="time" 
+                    id="pickupTimeEnd" 
+                    name="pickupTimeEnd" 
+                    required
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="pickupLocation">Pickup Location *</label>
+                <input 
+                  type="text" 
+                  id="pickupLocation" 
+                  name="pickupLocation" 
+                  placeholder="e.g., Main Gate, Hostel A Common Room"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">Additional Information</h3>
+              
+              <div class="form-group">
+                <label for="specialInstructions">Special Instructions</label>
+                <textarea 
+                  id="specialInstructions" 
+                  name="specialInstructions" 
+                  rows="3"
+                  placeholder="Any special notes for students? (e.g., best consumed within 2 hours, reheating instructions)"
+                ></textarea>
+              </div>
+
+              <div class="checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="customizable" id="customizable">
+                  <span>Allow customization requests (e.g., less spicy, extra gravy)</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="packaging" id="packaging" checked>
+                  <span>Eco-friendly packaging included</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                Cancel
+              </button>
+              <button type="button" class="btn btn-outline">
+                Save as Draft
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Publish Meal
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="upload-tips">
+          <h3>Tips for Success</h3>
+          <ul>
+            <li>📸 Use clear, well-lit photos of your food</li>
+            <li>📝 Write detailed descriptions - students love to know what they're getting</li>
+            <li>💰 Price competitively - check similar meals on the platform</li>
+            <li>⏰ Be realistic about quantities you can prepare</li>
+            <li>🌟 Respond to reviews and feedback to build your reputation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/chef-upload.js"></script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghar Ka Khana - Home-Cooked Meals for Students</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+   Navigation 
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🏠</span>
+        Ghar Ka Khana
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="order/browse-meals.html">Browse Meals</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="pickup/pickup-info.html">Pickup Info</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <a href="login/user-login.html" class="btn btn-secondary">Login</a>
+        <a href="order/browse-meals.html" class="btn btn-primary">Order Now</a>
+      </div>
+      
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+   Hero Section 
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <span class="hero-badge">🍛 Fresh Daily Meals</span>
+        <h1>Freshly Cooked. Lovingly Packed. Delivered Daily.</h1>
+        <p class="hero-tagline">
+          Missing home-cooked food? Get authentic, homemade meals prepared by your fellow students' families. Pre-order today, pick up tomorrow.
+        </p>
+        <div class="hero-cta">
+          <a href="order/browse-meals.html" class="btn btn-primary">Browse Today's Menu</a>
+          <a href="register/user-register.html" class="btn btn-outline">Sign Up Free</a>
+        </div>
+      </div>
+      
+      <div class="hero-image">
+        <img src="/placeholder.svg?height=600&width=600" alt="Home-cooked meal" class="hero-image-main">
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Happy Students</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Family Chefs</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">4.8★</div>
+            <div class="stat-label">Average Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   Trust Indicators 
+  <section class="trust-section">
+    <div class="trust-container">
+      <div class="trust-item">
+        <div class="trust-icon">✓</div>
+        <div class="trust-text">
+          <h4>100% Homemade</h4>
+          <p>Authentic home cooking</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🔒</div>
+        <div class="trust-text">
+          <h4>Safe & Hygienic</h4>
+          <p>Verified family kitchens</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">💰</div>
+        <div class="trust-text">
+          <h4>Student Friendly</h4>
+          <p>Affordable pricing</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">⚡</div>
+        <div class="trust-text">
+          <h4>Next Day Delivery</h4>
+          <p>Order today, eat tomorrow</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   Featured Meals 
+  <section class="featured-meals">
+    <div class="section-container">
+      <div class="section-header">
+        <p class="section-subtitle">Today's Specials</p>
+        <h2 class="section-title">Featured Meals</h2>
+        <p class="section-description">
+          Handpicked meals from our most loved family chefs. Order now for tomorrow's pickup!
+        </p>
+      </div>
+      
+      <div class="meals-grid">
+         Meal Card 1 
+        <div class="meal-card" onclick="window.location.href='meals/meal-details.html'">
+          <div class="meal-image-container">
+            <img src="/placeholder.svg?height=240&width=400" alt="Paneer Butter Masala" class="meal-image">
+            <span class="meal-badge badge-veg">
+              <span class="badge-icon"></span>
+              Veg
+            </span>
+          </div>
+          <div class="meal-content">
+            <div class="meal-header">
+              <h3 class="meal-title">Paneer Butter Masala</h3>
+              <span class="meal-price">₹120</span>
+            </div>
+            <p class="meal-description">
+              Creamy paneer curry with butter naan and jeera rice. Made with fresh ingredients and mom's special recipe.
+            </p>
+            <div class="meal-meta">
+              <div class="chef-info">
+                <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                <span class="chef-name">Priya's Mom</span>
+              </div>
+              <div class="meal-rating">
+                <span class="star">★</span>
+                <span class="rating-text">4.9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         Meal Card 2 
+        <div class="meal-card" onclick="window.location.href='meals/meal-details.html'">
+          <div class="meal-image-container">
+            <img src="/placeholder.svg?height=240&width=400" alt="Chicken Biryani" class="meal-image">
+            <span class="meal-badge badge-non-veg">
+              <span class="badge-icon"></span>
+              Non-Veg
+            </span>
+          </div>
+          <div class="meal-content">
+            <div class="meal-header">
+              <h3 class="meal-title">Chicken Biryani</h3>
+              <span class="meal-price">₹150</span>
+            </div>
+            <p class="meal-description">
+              Aromatic basmati rice layered with tender chicken, served with raita and salad. Hyderabadi style!
+            </p>
+            <div class="meal-meta">
+              <div class="chef-info">
+                <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                <span class="chef-name">Rahul's Mom</span>
+              </div>
+              <div class="meal-rating">
+                <span class="star">★</span>
+                <span class="rating-text">5.0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         Meal Card 3 
+        <div class="meal-card" onclick="window.location.href='meals/meal-details.html'">
+          <div class="meal-image-container">
+            <img src="/placeholder.svg?height=240&width=400" alt="Dal Tadka Thali" class="meal-image">
+            <span class="meal-badge badge-veg">
+              <span class="badge-icon"></span>
+              Veg
+            </span>
+          </div>
+          <div class="meal-content">
+            <div class="meal-header">
+              <h3 class="meal-title">Dal Tadka Thali</h3>
+              <span class="meal-price">₹100</span>
+            </div>
+            <p class="meal-description">
+              Complete meal with dal tadka, 3 rotis, rice, sabzi, and pickle. Just like home!
+            </p>
+            <div class="meal-meta">
+              <div class="chef-info">
+                <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                <span class="chef-name">Anjali's Mom</span>
+              </div>
+              <div class="meal-rating">
+                <span class="star">★</span>
+                <span class="rating-text">4.8</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         Meal Card 4 
+        <div class="meal-card" onclick="window.location.href='meals/meal-details.html'">
+          <div class="meal-image-container">
+            <img src="/placeholder.svg?height=240&width=400" alt="Chole Bhature" class="meal-image">
+            <span class="meal-badge badge-veg">
+              <span class="badge-icon"></span>
+              Veg
+            </span>
+          </div>
+          <div class="meal-content">
+            <div class="meal-header">
+              <h3 class="meal-title">Chole Bhature</h3>
+              <span class="meal-price">₹110</span>
+            </div>
+            <p class="meal-description">
+              Spicy chickpea curry with fluffy bhature, onions, and green chutney. Sunday special!
+            </p>
+            <div class="meal-meta">
+              <div class="chef-info">
+                <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                <span class="chef-name">Neha's Mom</span>
+              </div>
+              <div class="meal-rating">
+                <span class="star">★</span>
+                <span class="rating-text">4.7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         Meal Card 5 
+        <div class="meal-card" onclick="window.location.href='meals/meal-details.html'">
+          <div class="meal-image-container">
+            <img src="/placeholder.svg?height=240&width=400" alt="Rajma Chawal" class="meal-image">
+            <span class="meal-badge badge-veg">
+              <span class="badge-icon"></span>
+              Veg
+            </span>
+          </div>
+          <div class="meal-content">
+            <div class="meal-header">
+              <h3 class="meal-title">Rajma Chawal</h3>
+              <span class="meal-price">₹95</span>
+            </div>
+            <p class="meal-description">
+              Comfort food at its best! Kidney bean curry with steamed rice and salad.
+            </p>
+            <div class="meal-meta">
+              <div class="chef-info">
+                <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                <span class="chef-name">Kavya's Mom</span>
+              </div>
+              <div class="meal-rating">
+                <span class="star">★</span>
+                <span class="rating-text">4.9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         Meal Card 6 
+        <div class="meal-card" onclick="window.location.href='meals/meal-details.html'">
+          <div class="meal-image-container">
+            <img src="/placeholder.svg?height=240&width=400" alt="Fish Curry" class="meal-image">
+            <span class="meal-badge badge-non-veg">
+              <span class="badge-icon"></span>
+              Non-Veg
+            </span>
+          </div>
+          <div class="meal-content">
+            <div class="meal-header">
+              <h3 class="meal-title">Bengali Fish Curry</h3>
+              <span class="meal-price">₹140</span>
+            </div>
+            <p class="meal-description">
+              Authentic Bengali style fish curry with steamed rice. Fresh catch of the day!
+            </p>
+            <div class="meal-meta">
+              <div class="chef-info">
+                <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                <span class="chef-name">Ria's Mom</span>
+              </div>
+              <div class="meal-rating">
+                <span class="star">★</span>
+                <span class="rating-text">4.8</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="view-all-cta">
+        <a href="order/browse-meals.html" class="btn btn-primary">View Full Menu</a>
+      </div>
+    </div>
+  </section>
+
+   Reviews Section 
+  <section class="reviews-section">
+    <div class="section-container">
+      <div class="section-header">
+        <p class="section-subtitle">Testimonials</p>
+        <h2 class="section-title">What Students Say</h2>
+        <p class="section-description">
+          Real reviews from students who found their taste of home
+        </p>
+      </div>
+      
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-header">
+            <img src="/placeholder.svg?height=48&width=48" alt="Reviewer" class="reviewer-avatar">
+            <div class="reviewer-info">
+              <h4>Arjun Sharma</h4>
+              <p class="review-date">2 days ago</p>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+          </div>
+          <p class="review-text">
+            "The biryani reminded me of my mom's cooking! It's amazing to have access to home-cooked meals while staying in the hostel. Highly recommend!"
+          </p>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <img src="/placeholder.svg?height=48&width=48" alt="Reviewer" class="reviewer-avatar">
+            <div class="reviewer-info">
+              <h4>Sneha Patel</h4>
+              <p class="review-date">5 days ago</p>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+          </div>
+          <p class="review-text">
+            "Finally, food that tastes like home! The dal tadka thali is my go-to. Fresh, hygienic, and affordable. Thank you Ghar Ka Khana!"
+          </p>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <img src="/placeholder.svg?height=48&width=48" alt="Reviewer" class="reviewer-avatar">
+            <div class="reviewer-info">
+              <h4>Vikram Singh</h4>
+              <p class="review-date">1 week ago</p>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+          </div>
+          <p class="review-text">
+            "Best decision ever! No more mess food. The pickup system is super convenient, and the food quality is consistently excellent."
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   Footer 
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🏠 Ghar Ka Khana</h3>
+          <p>Connecting students with the warmth of home-cooked meals. Fresh, authentic, and made with love.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="order/browse-meals.html">Browse Meals</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>For Chefs</h4>
+          <ul class="footer-links">
+            <li><a href="register/chef-register.html">Become a Chef</a></li>
+            <li><a href="meals/chef-upload.html">Upload Meals</a></li>
+            <li><a href="login/chef-login.html">Chef Login</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#policies">Policies</a></li>
+            <li><a href="#privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Ghar Ka Khana. All rights reserved. Made with ❤️ for students.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

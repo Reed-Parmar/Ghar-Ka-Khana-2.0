@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Meals - Ghar Ka Khana</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/meals.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">🏠</span>
+        Ghar Ka Khana
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="browse-meals.html" class="active">Browse Meals</a></li>
+        <li><a href="../pickup/pickup-info.html">Pickup Info</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <a href="../login/user-login.html" class="btn btn-secondary">Login</a>
+        <button class="btn btn-primary cart-btn">
+          🛒 Cart <span class="cart-count">0</span>
+        </button>
+      </div>
+      
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <main class="browse-meals-page">
+    <section class="page-hero">
+      <div class="section-container">
+        <h1>Browse Today's Menu</h1>
+        <p>Fresh home-cooked meals available for tomorrow's pickup</p>
+      </div>
+    </section>
+
+    <section class="filters-section">
+      <div class="section-container">
+        <div class="filters-wrapper">
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search for dishes, cuisines, or chefs...">
+            <button class="search-btn">🔍</button>
+          </div>
+
+          <div class="filter-chips">
+            <button class="filter-chip active" data-filter="all">All Meals</button>
+            <button class="filter-chip" data-filter="veg">🟢 Vegetarian</button>
+            <button class="filter-chip" data-filter="non-veg">🔴 Non-Veg</button>
+            <button class="filter-chip" data-filter="north-indian">North Indian</button>
+            <button class="filter-chip" data-filter="south-indian">South Indian</button>
+            <button class="filter-chip" data-filter="chinese">Chinese</button>
+            <button class="filter-chip" data-filter="bengali">Bengali</button>
+          </div>
+
+          <div class="sort-options">
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy">
+              <option value="popular">Most Popular</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+              <option value="newest">Newest First</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="meals-listing">
+      <div class="section-container">
+        <div class="listing-header">
+          <h2>Available Meals <span class="meal-count">(24 meals)</span></h2>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid">⊞ Grid</button>
+            <button class="view-btn" data-view="list">☰ List</button>
+          </div>
+        </div>
+
+        <div class="meals-grid" id="mealsContainer">
+           Meal cards will be dynamically loaded 
+          <div class="meal-card" data-category="veg north-indian" data-price="120" data-rating="4.9">
+            <div class="meal-image-container">
+              <img src="/placeholder.svg?height=240&width=400" alt="Paneer Butter Masala" class="meal-image">
+              <span class="meal-badge badge-veg">
+                <span class="badge-icon"></span>
+                Veg
+              </span>
+              <button class="wishlist-btn">♡</button>
+            </div>
+            <div class="meal-content">
+              <div class="meal-header">
+                <h3 class="meal-title">Paneer Butter Masala</h3>
+                <span class="meal-price">₹120</span>
+              </div>
+              <p class="meal-description">
+                Creamy paneer curry with butter naan and jeera rice. Made with fresh ingredients.
+              </p>
+              <div class="meal-tags">
+                <span class="tag">North Indian</span>
+                <span class="tag">Serves 1</span>
+              </div>
+              <div class="meal-meta">
+                <div class="chef-info">
+                  <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                  <span class="chef-name">Priya's Mom</span>
+                </div>
+                <div class="meal-rating">
+                  <span class="star">★</span>
+                  <span class="rating-text">4.9</span>
+                </div>
+              </div>
+              <div class="meal-actions">
+                <button class="btn btn-outline view-details-btn" onclick="window.location.href='../meals/meal-details.html?id=1'">View Details</button>
+                <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card" data-category="non-veg north-indian" data-price="150" data-rating="5.0">
+            <div class="meal-image-container">
+              <img src="/placeholder.svg?height=240&width=400" alt="Chicken Biryani" class="meal-image">
+              <span class="meal-badge badge-non-veg">
+                <span class="badge-icon"></span>
+                Non-Veg
+              </span>
+              <button class="wishlist-btn">♡</button>
+            </div>
+            <div class="meal-content">
+              <div class="meal-header">
+                <h3 class="meal-title">Chicken Biryani</h3>
+                <span class="meal-price">₹150</span>
+              </div>
+              <p class="meal-description">
+                Aromatic basmati rice layered with tender chicken, served with raita and salad.
+              </p>
+              <div class="meal-tags">
+                <span class="tag">North Indian</span>
+                <span class="tag">Serves 1</span>
+              </div>
+              <div class="meal-meta">
+                <div class="chef-info">
+                  <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                  <span class="chef-name">Rahul's Mom</span>
+                </div>
+                <div class="meal-rating">
+                  <span class="star">★</span>
+                  <span class="rating-text">5.0</span>
+                </div>
+              </div>
+              <div class="meal-actions">
+                <button class="btn btn-outline view-details-btn" onclick="window.location.href='../meals/meal-details.html?id=2'">View Details</button>
+                <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card" data-category="veg north-indian" data-price="100" data-rating="4.8">
+            <div class="meal-image-container">
+              <img src="/placeholder.svg?height=240&width=400" alt="Dal Tadka Thali" class="meal-image">
+              <span class="meal-badge badge-veg">
+                <span class="badge-icon"></span>
+                Veg
+              </span>
+              <button class="wishlist-btn">♡</button>
+            </div>
+            <div class="meal-content">
+              <div class="meal-header">
+                <h3 class="meal-title">Dal Tadka Thali</h3>
+                <span class="meal-price">₹100</span>
+              </div>
+              <p class="meal-description">
+                Complete meal with dal tadka, 3 rotis, rice, sabzi, and pickle.
+              </p>
+              <div class="meal-tags">
+                <span class="tag">North Indian</span>
+                <span class="tag">Thali</span>
+              </div>
+              <div class="meal-meta">
+                <div class="chef-info">
+                  <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                  <span class="chef-name">Anjali's Mom</span>
+                </div>
+                <div class="meal-rating">
+                  <span class="star">★</span>
+                  <span class="rating-text">4.8</span>
+                </div>
+              </div>
+              <div class="meal-actions">
+                <button class="btn btn-outline view-details-btn" onclick="window.location.href='../meals/meal-details.html?id=3'">View Details</button>
+                <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card" data-category="veg south-indian" data-price="80" data-rating="4.7">
+            <div class="meal-image-container">
+              <img src="/placeholder.svg?height=240&width=400" alt="Masala Dosa" class="meal-image">
+              <span class="meal-badge badge-veg">
+                <span class="badge-icon"></span>
+                Veg
+              </span>
+              <button class="wishlist-btn">♡</button>
+            </div>
+            <div class="meal-content">
+              <div class="meal-header">
+                <h3 class="meal-title">Masala Dosa</h3>
+                <span class="meal-price">₹80</span>
+              </div>
+              <p class="meal-description">
+                Crispy dosa filled with spiced potato, served with sambar and chutneys.
+              </p>
+              <div class="meal-tags">
+                <span class="tag">South Indian</span>
+                <span class="tag">Breakfast</span>
+              </div>
+              <div class="meal-meta">
+                <div class="chef-info">
+                  <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                  <span class="chef-name">Lakshmi Aunty</span>
+                </div>
+                <div class="meal-rating">
+                  <span class="star">★</span>
+                  <span class="rating-text">4.7</span>
+                </div>
+              </div>
+              <div class="meal-actions">
+                <button class="btn btn-outline view-details-btn" onclick="window.location.href='../meals/meal-details.html?id=4'">View Details</button>
+                <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card" data-category="non-veg bengali" data-price="140" data-rating="4.8">
+            <div class="meal-image-container">
+              <img src="/placeholder.svg?height=240&width=400" alt="Fish Curry" class="meal-image">
+              <span class="meal-badge badge-non-veg">
+                <span class="badge-icon"></span>
+                Non-Veg
+              </span>
+              <button class="wishlist-btn">♡</button>
+            </div>
+            <div class="meal-content">
+              <div class="meal-header">
+                <h3 class="meal-title">Bengali Fish Curry</h3>
+                <span class="meal-price">₹140</span>
+              </div>
+              <p class="meal-description">
+                Authentic Bengali style fish curry with steamed rice. Fresh catch!
+              </p>
+              <div class="meal-tags">
+                <span class="tag">Bengali</span>
+                <span class="tag">Serves 1</span>
+              </div>
+              <div class="meal-meta">
+                <div class="chef-info">
+                  <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                  <span class="chef-name">Ria's Mom</span>
+                </div>
+                <div class="meal-rating">
+                  <span class="star">★</span>
+                  <span class="rating-text">4.8</span>
+                </div>
+              </div>
+              <div class="meal-actions">
+                <button class="btn btn-outline view-details-btn" onclick="window.location.href='../meals/meal-details.html?id=5'">View Details</button>
+                <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card" data-category="veg chinese" data-price="110" data-rating="4.6">
+            <div class="meal-image-container">
+              <img src="/placeholder.svg?height=240&width=400" alt="Hakka Noodles" class="meal-image">
+              <span class="meal-badge badge-veg">
+                <span class="badge-icon"></span>
+                Veg
+              </span>
+              <button class="wishlist-btn">♡</button>
+            </div>
+            <div class="meal-content">
+              <div class="meal-header">
+                <h3 class="meal-title">Veg Hakka Noodles</h3>
+                <span class="meal-price">₹110</span>
+              </div>
+              <p class="meal-description">
+                Stir-fried noodles with vegetables and manchurian gravy on the side.
+              </p>
+              <div class="meal-tags">
+                <span class="tag">Chinese</span>
+                <span class="tag">Serves 1</span>
+              </div>
+              <div class="meal-meta">
+                <div class="chef-info">
+                  <img src="/placeholder.svg?height=32&width=32" alt="Chef" class="chef-avatar">
+                  <span class="chef-name">Meera's Mom</span>
+                </div>
+                <div class="meal-rating">
+                  <span class="star">★</span>
+                  <span class="rating-text">4.6</span>
+                </div>
+              </div>
+              <div class="meal-actions">
+                <button class="btn btn-outline view-details-btn" onclick="window.location.href='../meals/meal-details.html?id=6'">View Details</button>
+                <button class="btn btn-primary add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pagination">
+          <button class="pagination-btn" disabled>← Previous</button>
+          <div class="pagination-numbers">
+            <button class="pagination-number active">1</button>
+            <button class="pagination-number">2</button>
+            <button class="pagination-number">3</button>
+          </div>
+          <button class="pagination-btn">Next →</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🏠 Ghar Ka Khana</h3>
+          <p>Connecting students with the warmth of home-cooked meals.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="browse-meals.html">Browse Meals</a></li>
+            <li><a href="../pickup/pickup-info.html">Pickup Info</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>For Chefs</h4>
+          <ul class="footer-links">
+            <li><a href="../register/chef-register.html">Become a Chef</a></li>
+            <li><a href="../meals/chef-upload.html">Upload Meals</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Ghar Ka Khana. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/meals.js"></script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickup Coordination - Ghar Ka Khana</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pickup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="logo">Ghar Ka Khana</a>
+            <div class="nav-links">
+                <a href="browse-meals.html">Browse Meals</a>
+                <a href="../meals/chef-upload.html">Become a Chef</a>
+                <a href="pickup-coordination.html" class="active">My Orders</a>
+                <a href="#" class="user-profile">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pickup-page">
+        <div class="container">
+            <div class="page-header">
+                <h1>My Orders</h1>
+                <p>Track and coordinate your meal pickups</p>
+            </div>
+
+            <!-- Order Tabs -->
+            <div class="order-tabs">
+                <button class="tab-btn active" data-tab="active">Active Orders</button>
+                <button class="tab-btn" data-tab="upcoming">Upcoming</button>
+                <button class="tab-btn" data-tab="completed">Completed</button>
+            </div>
+
+            <!-- Active Orders -->
+            <div class="tab-content active" id="active-tab">
+                <div class="orders-grid">
+                    <!-- Order Card 1 -->
+                    <div class="order-card status-ready">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <h3>Order #GK2025001</h3>
+                                <span class="order-status ready">Ready for Pickup</span>
+                            </div>
+                            <div class="order-time">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>12:30 PM - 1:00 PM</span>
+                            </div>
+                        </div>
+
+                        <div class="order-items">
+                            <div class="item-row">
+                                <img src="/homemade-rajma-chawal.jpg" alt="Rajma Chawal">
+                                <div class="item-info">
+                                    <h4>Rajma Chawal</h4>
+                                    <p>Qty: 2</p>
+                                </div>
+                            </div>
+                            <div class="item-row">
+                                <img src="/homemade-paneer-tikka.jpg" alt="Paneer Tikka">
+                                <div class="item-info">
+                                    <h4>Paneer Tikka (8 pcs)</h4>
+                                    <p>Qty: 1</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pickup-details">
+                            <div class="detail-row">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <div>
+                                    <strong>Pickup Location</strong>
+                                    <p>Main Gate, Near Security Post</p>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <div>
+                                    <strong>Chef</strong>
+                                    <p>Priya's Kitchen • 4.8 ⭐</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chef-contact">
+                            <div class="contact-info">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                <span>+91 98765 43210</span>
+                            </div>
+                            <button class="btn-secondary btn-sm" onclick="callChef('+919876543210')">Call Chef</button>
+                        </div>
+
+                        <div class="order-actions">
+                            <button class="btn-primary" onclick="confirmPickup('GK2025001')">Confirm Pickup</button>
+                            <button class="btn-outline" onclick="reportIssue('GK2025001')">Report Issue</button>
+                        </div>
+
+                        <div class="order-total">
+                            <span>Total Paid</span>
+                            <strong>₹294</strong>
+                        </div>
+                    </div>
+
+                    <!-- Order Card 2 -->
+                    <div class="order-card status-preparing">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <h3>Order #GK2025002</h3>
+                                <span class="order-status preparing">Being Prepared</span>
+                            </div>
+                            <div class="order-time">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>6:00 PM - 6:30 PM</span>
+                            </div>
+                        </div>
+
+                        <div class="order-items">
+                            <div class="item-row">
+                                <img src="/placeholder.svg?height=60&width=60" alt="Dal Makhani">
+                                <div class="item-info">
+                                    <h4>Dal Makhani with Rice</h4>
+                                    <p>Qty: 1</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pickup-details">
+                            <div class="detail-row">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <div>
+                                    <strong>Pickup Location</strong>
+                                    <p>Library Entrance</p>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <div>
+                                    <strong>Chef</strong>
+                                    <p>Aunty's Kitchen • 4.9 ⭐</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="preparation-status">
+                            <div class="status-bar">
+                                <div class="status-progress" style="width: 60%"></div>
+                            </div>
+                            <p>Your meal is being prepared with love ❤️</p>
+                        </div>
+
+                        <div class="chef-contact">
+                            <div class="contact-info">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                <span>+91 98765 43211</span>
+                            </div>
+                            <button class="btn-secondary btn-sm" onclick="callChef('+919876543211')">Call Chef</button>
+                        </div>
+
+                        <div class="order-actions">
+                            <button class="btn-outline" onclick="cancelOrder('GK2025002')">Cancel Order</button>
+                        </div>
+
+                        <div class="order-total">
+                            <span>Total Paid</span>
+                            <strong>₹180</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Orders -->
+            <div class="tab-content" id="upcoming-tab">
+                <div class="orders-grid">
+                    <div class="order-card status-scheduled">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <h3>Order #GK2025003</h3>
+                                <span class="order-status scheduled">Scheduled</span>
+                            </div>
+                            <div class="order-time">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Tomorrow, 1:00 PM</span>
+                            </div>
+                        </div>
+
+                        <div class="order-items">
+                            <div class="item-row">
+                                <img src="/placeholder.svg?height=60&width=60" alt="Chole Bhature">
+                                <div class="item-info">
+                                    <h4>Chole Bhature</h4>
+                                    <p>Qty: 2</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pickup-details">
+                            <div class="detail-row">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <div>
+                                    <strong>Pickup Location</strong>
+                                    <p>Cafeteria Area</p>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <div>
+                                    <strong>Chef</strong>
+                                    <p>Mom's Kitchen • 5.0 ⭐</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-actions">
+                            <button class="btn-outline" onclick="modifyOrder('GK2025003')">Modify Order</button>
+                            <button class="btn-outline" onclick="cancelOrder('GK2025003')">Cancel Order</button>
+                        </div>
+
+                        <div class="order-total">
+                            <span>Total Paid</span>
+                            <strong>₹220</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Orders -->
+            <div class="tab-content" id="completed-tab">
+                <div class="orders-grid">
+                    <div class="order-card status-completed">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <h3>Order #GK2024999</h3>
+                                <span class="order-status completed">Completed</span>
+                            </div>
+                            <div class="order-date">
+                                <span>Yesterday, 12:30 PM</span>
+                            </div>
+                        </div>
+
+                        <div class="order-items">
+                            <div class="item-row">
+                                <img src="/placeholder.svg?height=60&width=60" alt="Chicken Biryani">
+                                <div class="item-info">
+                                    <h4>Chicken Biryani</h4>
+                                    <p>Qty: 1</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pickup-details">
+                            <div class="detail-row">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <div>
+                                    <strong>Chef</strong>
+                                    <p>Priya's Kitchen • 4.8 ⭐</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-actions">
+                            <button class="btn-primary" onclick="leaveReview('GK2024999')">Leave a Review</button>
+                            <button class="btn-outline" onclick="reorder('GK2024999')">Reorder</button>
+                        </div>
+
+                        <div class="order-total">
+                            <span>Total Paid</span>
+                            <strong>₹200</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Ghar Ka Khana</h3>
+                    <p>Bringing the taste of home to college students, one meal at a time.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="browse-meals.html">Browse Meals</a>
+                    <a href="../meals/chef-upload.html">Become a Chef</a>
+                    <a href="#">About Us</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="#">Help Center</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">FAQs</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ghar Ka Khana. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/pickup.js"></script>
+</body>
+</html>

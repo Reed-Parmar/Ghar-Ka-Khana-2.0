@@ -1,0 +1,384 @@
+.review-page {
+  padding: 2rem 0 4rem;
+  background: linear-gradient(to bottom, #fff8f3 0%, #ffffff 100%);
+  min-height: calc(100vh - 80px);
+}
+
+.review-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.review-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.review-header h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  color: #2c1810;
+  margin-bottom: 0.5rem;
+}
+
+.review-header p {
+  color: #8b6f47;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Order Summary Card */
+.order-summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.order-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.order-label {
+  font-weight: 600;
+  color: #2c1810;
+}
+
+.order-date {
+  color: #8b6f47;
+  font-size: 0.875rem;
+}
+
+.meal-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.meal-info img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.meal-info h3 {
+  font-size: 1.25rem;
+  color: #2c1810;
+  margin-bottom: 0.25rem;
+}
+
+.meal-info p {
+  color: #8b6f47;
+  font-size: 0.875rem;
+}
+
+/* Review Form */
+.review-form {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.form-section h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  color: #2c1810;
+  margin-bottom: 1.5rem;
+}
+
+.section-description {
+  color: #8b6f47;
+  font-size: 0.875rem;
+  margin-top: -0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Star Rating Input */
+.star-rating-input {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.star-rating-input input {
+  display: none;
+}
+
+.star-rating-input .star {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star-rating-input .star svg {
+  width: 48px;
+  height: 48px;
+  color: #e5e5e5;
+  transition: all 0.2s ease;
+}
+
+.star-rating-input input:checked ~ .star svg,
+.star-rating-input .star:hover svg,
+.star-rating-input .star:hover ~ .star svg {
+  color: #ff6b35;
+  transform: scale(1.1);
+}
+
+.rating-text {
+  text-align: center;
+  color: #8b6f47;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* Rating Rows */
+.rating-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.rating-row:last-child {
+  margin-bottom: 0;
+}
+
+.rating-label span {
+  display: block;
+  font-weight: 600;
+  color: #2c1810;
+  margin-bottom: 0.25rem;
+}
+
+.rating-label p {
+  font-size: 0.875rem;
+  color: #8b6f47;
+}
+
+.star-rating-small {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0.25rem;
+}
+
+.star-rating-small .star {
+  font-size: 1.5rem;
+  color: #e5e5e5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star-rating-small .star:hover,
+.star-rating-small .star:hover ~ .star,
+.star-rating-small .star.active {
+  color: #ff6b35;
+}
+
+/* Textarea */
+textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.char-count {
+  text-align: right;
+  color: #8b6f47;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Photo Upload */
+.photo-upload-area {
+  border: 2px dashed #e5e5e5;
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.photo-upload-area:hover {
+  border-color: #ff6b35;
+  background: #fff8f3;
+}
+
+.photo-upload-area svg {
+  color: #8b6f47;
+  margin-bottom: 1rem;
+}
+
+.photo-upload-area p {
+  color: #2c1810;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.photo-upload-area span {
+  color: #8b6f47;
+  font-size: 0.875rem;
+}
+
+.photo-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-remove {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.photo-remove:hover {
+  background: #ff6b35;
+}
+
+/* Recommend Toggle */
+.recommend-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.recommend-toggle {
+  flex-shrink: 0;
+}
+
+.recommend-toggle input {
+  display: none;
+}
+
+.toggle-label {
+  display: block;
+  width: 60px;
+  height: 32px;
+  background: #e5e5e5;
+  border-radius: 16px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-switch {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.recommend-toggle input:checked + .toggle-label {
+  background: #4caf50;
+}
+
+.recommend-toggle input:checked + .toggle-label .toggle-switch {
+  left: 32px;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.form-actions button {
+  flex: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .review-header h1 {
+    font-size: 2rem;
+  }
+
+  .review-form {
+    padding: 1.5rem;
+  }
+
+  .rating-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .star-rating-input .star svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .recommend-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}
