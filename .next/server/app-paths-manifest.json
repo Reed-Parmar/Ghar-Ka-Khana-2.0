@@ -1,12 +1,5 @@
 {
-  "/chef/dashboard/page": "app/chef/dashboard/page.js",
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
   "/page": "app/page.js",
-  "/meals/page": "app/meals/page.js",
-  "/chefs/page": "app/chefs/page.js",
-  "/login/page": "app/login/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/student/dashboard/page": "app/student/dashboard/page.js",
-  "/api/user/profile/route": "app/api/user/profile/route.js",
-  "/api/orders/user/[userId]/route": "app/api/orders/user/[userId]/route.js"
+  "/login/page": "app/login/page.js"
 }
