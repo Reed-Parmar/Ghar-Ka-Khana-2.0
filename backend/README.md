@@ -1,7 +1,7 @@
 # Ghar Ka Khana Backend
 
-Backend API for the Ghar Ka Khana home-cooked meal delivery platform.
-
+Backend AP for the Ghar Ka Khana home-cooked meal delivery platform.
+I
 ## Features
 
 - **Chef Management**: Registration, login, meal upload and publishing

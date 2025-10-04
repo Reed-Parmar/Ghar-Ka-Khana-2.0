@@ -1,0 +1,17 @@
+com\gharkakhana\service\MealService.class
+com\gharkakhana\controller\ChefController.class
+com\gharkakhana\entity\User.class
+com\gharkakhana\controller\MealController.class
+com\gharkakhana\repository\OrderRepository.class
+com\gharkakhana\controller\OrderController.class
+com\gharkakhana\entity\Meal.class
+com\gharkakhana\service\UserService.class
+com\gharkakhana\GharKaKhanaApplication.class
+com\gharkakhana\config\CorsConfig.class
+com\gharkakhana\repository\UserRepository.class
+com\gharkakhana\entity\Order.class
+com\gharkakhana\controller\UserController.class
+com\gharkakhana\entity\UserRole.class
+com\gharkakhana\service\OrderService.class
+com\gharkakhana\repository\MealRepository.class
+com\gharkakhana\util\JwtUtil.class

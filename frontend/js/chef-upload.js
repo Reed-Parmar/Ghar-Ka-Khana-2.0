@@ -1,211 +1,328 @@
-const mealUploadForm = document.getElementById("mealUploadForm")
-const priceInput = document.getElementById("price")
-const chefEarningSpan = document.getElementById("chefEarning")
-const addComponentBtn = document.getElementById("addComponent")
-const componentsContainer = document.getElementById("componentsContainer")
-const imageUploadArea = document.getElementById("imageUploadArea")
-const mealImagesInput = document.getElementById("mealImages")
-const imagePreviewContainer = document.getElementById("imagePreviewContainer")
-
-const uploadedImages = []
-
-// Calculate chef earning based on price
-if (priceInput && chefEarningSpan) {
-  priceInput.addEventListener("input", (e) => {
-    const price = Number.parseFloat(e.target.value) || 0
-    const commission = price * 0.1
-    const earning = price - commission
-    chefEarningSpan.textContent = earning.toFixed(0)
-  })
-}
-
-// Add component functionality
-if (addComponentBtn && componentsContainer) {
-  addComponentBtn.addEventListener("click", () => {
-    const componentItem = document.createElement("div")
-    componentItem.className = "component-item"
-    componentItem.innerHTML = `
-      <input 
-        type="text" 
-        name="component[]" 
-        placeholder="e.g., 2 Butter Naans"
-        required
-      >
-      <button type="button" class="btn-icon remove-component">✕</button>
-    `
-    componentsContainer.appendChild(componentItem)
-
-    // Add remove functionality
-    const removeBtn = componentItem.querySelector(".remove-component")
-    removeBtn.addEventListener("click", () => {
-      componentItem.remove()
-      updateRemoveButtons()
-    })
-
-    updateRemoveButtons()
-  })
-}
-
-function updateRemoveButtons() {
-  const removeButtons = componentsContainer.querySelectorAll(".remove-component")
-  removeButtons.forEach((btn, index) => {
-    btn.disabled = removeButtons.length === 1
-  })
-}
-
-// Image upload functionality
-if (imageUploadArea && mealImagesInput) {
-  imageUploadArea.addEventListener("click", () => {
-    mealImagesInput.click()
-  })
-
-  mealImagesInput.addEventListener("change", (e) => {
-    const files = Array.from(e.target.files)
-
-    files.forEach((file) => {
-      if (uploadedImages.length >= 4) {
-        showToast("Maximum 4 images allowed", "error")
-        return
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        showToast("Image size should be less than 5MB", "error")
-        return
-      }
-
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        uploadedImages.push({
-          file: file,
-          url: event.target.result,
-        })
-        renderImagePreviews()
-      }
-      reader.readAsDataURL(file)
-    })
-  })
-
-  // Drag and drop
-  imageUploadArea.addEventListener("dragover", (e) => {
-    e.preventDefault()
-    imageUploadArea.style.borderColor = "var(--orange)"
-    imageUploadArea.style.backgroundColor = "var(--cream)"
-  })
-
-  imageUploadArea.addEventListener("dragleave", (e) => {
-    e.preventDefault()
-    imageUploadArea.style.borderColor = ""
-    imageUploadArea.style.backgroundColor = ""
-  })
-
-  imageUploadArea.addEventListener("drop", (e) => {
-    e.preventDefault()
-    imageUploadArea.style.borderColor = ""
-    imageUploadArea.style.backgroundColor = ""
-
-    const files = Array.from(e.dataTransfer.files)
-    const imageFiles = files.filter((file) => file.type.startsWith("image/"))
-
-    if (imageFiles.length > 0) {
-      const dataTransfer = new DataTransfer()
-      imageFiles.forEach((file) => dataTransfer.items.add(file))
-      mealImagesInput.files = dataTransfer.files
-
-      const event = new Event("change", { bubbles: true })
-      mealImagesInput.dispatchEvent(event)
-    }
-  })
-}
-
-function renderImagePreviews() {
-  imagePreviewContainer.innerHTML = ""
-
-  uploadedImages.forEach((image, index) => {
-    const previewDiv = document.createElement("div")
-    previewDiv.className = "image-preview"
-    previewDiv.innerHTML = `
-      <img src="${image.url}" alt="Preview ${index + 1}">
-      <button type="button" class="remove-image" data-index="${index}">✕</button>
-    `
-    imagePreviewContainer.appendChild(previewDiv)
-
-    const removeBtn = previewDiv.querySelector(".remove-image")
-    removeBtn.addEventListener("click", () => {
-      uploadedImages.splice(index, 1)
-      renderImagePreviews()
-    })
-  })
-}
-
-// Set minimum date to tomorrow
-const availableDateInput = document.getElementById("availableDate")
-if (availableDateInput) {
-  const tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  const minDate = tomorrow.toISOString().split("T")[0]
-  availableDateInput.min = minDate
-  availableDateInput.value = minDate
-}
-
-// Form submission
-if (mealUploadForm) {
-  mealUploadForm.addEventListener("submit", async (e) => {
-    e.preventDefault()
-
-    if (uploadedImages.length === 0) {
-      showToast("Please upload at least one image", "error")
-      return
+// Chef Upload Page with Backend Integration
+class ChefUploadManager {
+    constructor() {
+        this.chefId = null;
+        this.init();
     }
 
-    const formData = new FormData(mealUploadForm)
+    async init() {
+        await this.checkAuthentication();
+        this.setupEventListeners();
+        this.setupFormValidation();
+        this.setupImageUpload();
+        this.setupComponentManagement();
+        this.setupPriceCalculation();
+    }
 
-    // Add images to form data
-    uploadedImages.forEach((image, index) => {
-      formData.append(`image_${index}`, image.file)
-    })
+    // Check if chef is authenticated
+    async checkAuthentication() {
+        try {
+            if (!window.api.isAuthenticated()) {
+                showToast("Please login to access chef dashboard", "error");
+                setTimeout(() => {
+                    window.location.href = "../login/chef-login.html";
+                }, 2000);
+                return;
+            }
 
-    console.log("[v0] Submitting meal upload form")
+            const user = await window.api.getCurrentUser();
+            if (user.role !== 'CHEF') {
+                showToast("Access denied. Chef account required.", "error");
+                setTimeout(() => {
+                    window.location.href = "../index.html";
+                }, 2000);
+                return;
+            }
 
-    // TODO: Replace with actual API call
-    // const response = await fetch('/api/chef/meals', {
-    //   method: 'POST',
-    //   body: formData
-    // })
+            // Get chef ID from user data (you might need to modify the API to return user ID)
+            this.chefId = 1; // This should come from the authenticated user data
+        } catch (error) {
+            console.error("Authentication check failed:", error);
+            showToast("Authentication failed. Please login again.", "error");
+            setTimeout(() => {
+                window.location.href = "../login/chef-login.html";
+            }, 2000);
+        }
+    }
 
-    // Simulate successful upload
-    setTimeout(() => {
-      showToast("Meal published successfully!", "success")
-      setTimeout(() => {
-        window.location.href = "#my-meals"
-      }, 2000)
-    }, 1500)
-  })
+    // Setup event listeners
+    setupEventListeners() {
+        const form = document.getElementById("mealUploadForm");
+        if (form) {
+            form.addEventListener("submit", (e) => this.handleMealUpload(e));
+        }
+
+        // Set default date to tomorrow
+        const dateInput = document.getElementById("availableDate");
+        if (dateInput) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.value = tomorrow.toISOString().split('T')[0];
+        }
+
+        // Set default pickup times
+        const startTime = document.getElementById("pickupTimeStart");
+        const endTime = document.getElementById("pickupTimeEnd");
+        if (startTime) startTime.value = "12:00";
+        if (endTime) endTime.value = "14:00";
+    }
+
+    // Setup form validation
+    setupFormValidation() {
+        const form = document.getElementById("mealUploadForm");
+        if (!form) return;
+
+        // Real-time validation
+        const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => this.validateField(input));
+        });
+    }
+
+    // Validate individual field
+    validateField(field) {
+        const value = field.value.trim();
+        const isValid = value.length > 0;
+
+        if (isValid) {
+            field.style.borderColor = "#2D6A4F";
+        } else {
+            field.style.borderColor = "#C1121F";
+        }
+
+        return isValid;
+    }
+
+    // Setup image upload
+    setupImageUpload() {
+        const uploadArea = document.getElementById("imageUploadArea");
+        const fileInput = document.getElementById("mealImages");
+        const previewContainer = document.getElementById("imagePreviewContainer");
+
+        if (!uploadArea || !fileInput || !previewContainer) return;
+
+        // Click to upload
+        uploadArea.addEventListener("click", () => fileInput.click());
+
+        // Drag and drop
+        uploadArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            uploadArea.classList.add("drag-over");
+        });
+
+        uploadArea.addEventListener("dragleave", () => {
+            uploadArea.classList.remove("drag-over");
+        });
+
+        uploadArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove("drag-over");
+            const files = Array.from(e.dataTransfer.files);
+            this.handleImageFiles(files);
+        });
+
+        // File input change
+        fileInput.addEventListener("change", (e) => {
+            const files = Array.from(e.target.files);
+            this.handleImageFiles(files);
+        });
+    }
+
+    // Handle image files
+    handleImageFiles(files) {
+        const previewContainer = document.getElementById("imagePreviewContainer");
+        if (!previewContainer) return;
+
+        // Clear existing previews
+        previewContainer.innerHTML = "";
+
+        files.slice(0, 4).forEach((file, index) => {
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.createElement("div");
+                    preview.className = "image-preview";
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview ${index + 1}">
+                        <button type="button" class="remove-image" data-index="${index}">×</button>
+                    `;
+                    previewContainer.appendChild(preview);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Setup component management
+    setupComponentManagement() {
+        const addComponentBtn = document.getElementById("addComponent");
+        const componentsContainer = document.getElementById("componentsContainer");
+
+        if (addComponentBtn && componentsContainer) {
+            addComponentBtn.addEventListener("click", () => this.addComponent());
+        }
+
+        // Remove component functionality
+        componentsContainer.addEventListener("click", (e) => {
+            if (e.target.classList.contains("remove-component")) {
+                this.removeComponent(e.target);
+            }
+        });
+    }
+
+    // Add component
+    addComponent() {
+        const container = document.getElementById("componentsContainer");
+        const componentDiv = document.createElement("div");
+        componentDiv.className = "component-item";
+        componentDiv.innerHTML = `
+            <input type="text" name="component[]" placeholder="e.g., Rice (200g)" required>
+            <button type="button" class="btn-icon remove-component">✕</button>
+        `;
+        container.appendChild(componentDiv);
+
+        // Enable remove buttons if more than one component
+        this.updateComponentButtons();
+    }
+
+    // Remove component
+    removeComponent(button) {
+        button.parentElement.remove();
+        this.updateComponentButtons();
+    }
+
+    // Update component buttons
+    updateComponentButtons() {
+        const components = document.querySelectorAll(".component-item");
+        const removeButtons = document.querySelectorAll(".remove-component");
+        
+        removeButtons.forEach(btn => {
+            btn.disabled = components.length <= 1;
+        });
+    }
+
+    // Setup price calculation
+    setupPriceCalculation() {
+        const priceInput = document.getElementById("price");
+        const chefEarningSpan = document.getElementById("chefEarning");
+
+        if (priceInput && chefEarningSpan) {
+            priceInput.addEventListener("input", () => {
+                const price = parseFloat(priceInput.value) || 0;
+                const commission = 0.1; // 10% commission
+                const earning = price * (1 - commission);
+                chefEarningSpan.textContent = earning.toFixed(0);
+            });
+        }
+    }
+
+    // Handle meal upload
+    async handleMealUpload(e) {
+        e.preventDefault();
+
+        try {
+            showLoadingState("Uploading meal...");
+
+            const formData = this.collectFormData();
+            const response = await window.api.uploadMeal(formData);
+
+            showToast("Meal uploaded successfully!", "success");
+            setTimeout(() => {
+                window.location.href = "#my-meals"; // Redirect to meals list
+            }, 1500);
+
+        } catch (error) {
+            console.error("Meal upload failed:", error);
+            showToast("Failed to upload meal. Please try again.", "error");
+        } finally {
+            hideLoadingState();
+        }
+    }
+
+    // Collect form data
+    collectFormData() {
+        const form = document.getElementById("mealUploadForm");
+        const formData = new FormData(form);
+
+        // Get basic meal data
+        const mealData = {
+            mealName: formData.get("mealName"),
+            description: formData.get("description"),
+            price: parseFloat(formData.get("price")),
+            availableTime: formData.get("mealType"), // Using mealType as availableTime
+            imageUrl: this.getImageUrl(), // You'll need to implement image upload
+            chef: { id: this.chefId } // This should be set from authenticated user
+        };
+
+        return mealData;
+    }
+
+    // Get image URL (placeholder implementation)
+    getImageUrl() {
+        // In a real implementation, you would upload images to a server
+        // and return the URL. For now, return a placeholder.
+        return "/placeholder.svg?height=240&width=400";
+    }
 }
 
-// Toast notification
+// Utility functions
+function showLoadingState(message = "Loading...") {
+    let loader = document.getElementById("loadingIndicator");
+    if (!loader) {
+        loader = document.createElement("div");
+        loader.id = "loadingIndicator";
+        loader.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            z-index: 10000;
+        `;
+        document.body.appendChild(loader);
+    }
+    loader.textContent = message;
+}
+
+function hideLoadingState() {
+    const loader = document.getElementById("loadingIndicator");
+    if (loader) {
+        loader.remove();
+    }
+}
+
 function showToast(message, type = "success") {
-  const toast = document.createElement("div")
-  toast.className = `toast toast-${type}`
-  toast.textContent = message
-  toast.style.cssText = `
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: ${type === "success" ? "#2D6A4F" : "#C1121F"};
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    z-index: 10000;
-    animation: slideIn 0.3s ease;
-  `
+    const toast = document.createElement("div");
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: ${type === "success" ? "#2D6A4F" : "#C1121F"};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+        max-width: 400px;
+    `;
 
-  document.body.appendChild(toast)
+    document.body.appendChild(toast);
 
-  setTimeout(() => {
-    toast.style.animation = "slideOut 0.3s ease"
-    setTimeout(() => toast.remove(), 300)
-  }, 3000)
+    setTimeout(() => {
+        toast.style.animation = "slideOut 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
-console.log("[v0] Chef upload page loaded")
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new ChefUploadManager();
+});
+
+console.log("[v0] Chef upload page loaded with backend integration");
