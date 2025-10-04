@@ -68,4 +68,7 @@ OrderSchema.index({ chef: 1, createdAt: -1 });
 OrderSchema.index({ meal: 1 });
 OrderSchema.index({ status: 1 });
 
-export default mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);
+// Export the model, creating it if it doesn't exist
+// Handle case where mongoose.models might be undefined
+const Order = (mongoose.models && mongoose.models.Order) || mongoose.model<IOrder>('Order', OrderSchema);
+export default Order;

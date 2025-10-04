@@ -56,4 +56,7 @@ const MealSchema = new mongoose.Schema({
 MealSchema.index({ chef: 1, isActive: 1 });
 MealSchema.index({ isActive: 1, createdAt: -1 });
 
-export default mongoose.models.Meal || mongoose.model<IMeal>('Meal', MealSchema);
+// Export the model, creating it if it doesn't exist
+// Handle case where mongoose.models might be undefined
+const Meal = (mongoose.models && mongoose.models.Meal) || mongoose.model<IMeal>('Meal', MealSchema);
+export default Meal;

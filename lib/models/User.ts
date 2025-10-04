@@ -49,4 +49,7 @@ const UserSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+// Export the model, creating it if it doesn't exist
+// Handle case where mongoose.models might be undefined
+const User = (mongoose.models && mongoose.models.User) || mongoose.model<IUser>('User', UserSchema);
+export default User;

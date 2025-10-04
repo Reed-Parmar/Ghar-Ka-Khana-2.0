@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { nextUrl } = req;
 
   // Public routes that don't require authentication
@@ -43,12 +44,16 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // For protected routes, check for session
-  const sessionToken = req.cookies.get('next-auth.session-token') || 
-                      req.cookies.get('__Secure-next-auth.session-token');
-
-  // If no session token and trying to access protected route
-  if (!sessionToken && !isPublicRoute) {
+  // For protected routes, check for session using NextAuth v5
+  try {
+    const session = await auth();
+    
+    // If no session and trying to access protected route
+    if (!session || !session.user) {
+      return NextResponse.redirect(new URL('/login', nextUrl));
+    }
+  } catch (error) {
+    console.error('Middleware auth error:', error);
     return NextResponse.redirect(new URL('/login', nextUrl));
   }
 
