@@ -2,6 +2,7 @@
 const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['mongoose'],
+    optimizePackageImports: ['lucide-react'],
   },
   images: {
     remotePatterns: [
