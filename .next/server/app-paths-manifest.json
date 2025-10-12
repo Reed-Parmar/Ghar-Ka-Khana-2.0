@@ -1,6 +1,13 @@
 {
   "/page": "app/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/register/page": "app/register/page.js",
-  "/login/page": "app/login/page.js"
+  "/test-api/page": "app/test-api/page.js",
+  "/student/dashboard/page": "app/student/dashboard/page.js",
+  "/login/page": "app/login/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
+  "/api/admin/chefs/route": "app/api/admin/chefs/route.js",
+  "/api/admin/users/[userId]/status/route": "app/api/admin/users/[userId]/status/route.js",
+  "/api/admin/chefs/[chefId]/approval/route": "app/api/admin/chefs/[chefId]/approval/route.js",
+  "/api/admin/users/route": "app/api/admin/users/route.js",
+  "/meals/page": "app/meals/page.js",
+  "/api/meals/all/route": "app/api/meals/all/route.js"
 }
