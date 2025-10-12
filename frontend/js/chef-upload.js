@@ -157,28 +157,54 @@ if (mealUploadForm) {
       return
     }
 
-    const formData = new FormData(mealUploadForm)
+    // Get user from localStorage
+    const userData = localStorage.getItem('user')
+    if (!userData) {
+      showToast("Please login first", "error")
+      window.location.href = "../login/chef-login.html"
+      return
+    }
 
-    // Add images to form data
-    uploadedImages.forEach((image, index) => {
-      formData.append(`image_${index}`, image.file)
-    })
+    const user = JSON.parse(userData)
+    if (user.role !== 'chef') {
+      showToast("Only chefs can upload meals", "error")
+      return
+    }
+
+    const formData = {
+      mealName: document.getElementById("mealName").value,
+      description: document.getElementById("description").value,
+      price: parseFloat(document.getElementById("price").value),
+      availableTime: document.getElementById("availableDate").value,
+      imageUrl: uploadedImages[0]?.url || '', // Use first image as primary
+    }
 
     console.log("[v0] Submitting meal upload form")
 
-    // TODO: Replace with actual API call
-    // const response = await fetch('/api/chef/meals', {
-    //   method: 'POST',
-    //   body: formData
-    // })
+    try {
+      const response = await fetch('/api/meals/upload', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token || ''}` // Add if you implement token auth
+        },
+        body: JSON.stringify(formData)
+      })
 
-    // Simulate successful upload
-    setTimeout(() => {
-      showToast("Meal published successfully!", "success")
-      setTimeout(() => {
-        window.location.href = "#my-meals"
-      }, 2000)
-    }, 1500)
+      const data = await response.json()
+
+      if (response.ok) {
+        showToast("Meal published successfully!", "success")
+        setTimeout(() => {
+          window.location.href = "#my-meals"
+        }, 2000)
+      } else {
+        showToast(data.error || "Upload failed", "error")
+      }
+    } catch (error) {
+      console.error('Upload error:', error)
+      showToast("Network error. Please try again.", "error")
+    }
   })
 }
 

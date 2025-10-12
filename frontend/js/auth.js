@@ -11,20 +11,28 @@ if (userLoginForm) {
 
     console.log("[v0] User login attempt:", formData.email)
 
-    // TODO: Replace with actual API call
-    // const response = await fetch('/api/auth/user/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(formData)
-    // })
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
 
-    // Simulate successful login
-    setTimeout(() => {
-      showToast("Login successful! Redirecting...", "success")
-      setTimeout(() => {
-        window.location.href = "../order/browse-meals.html"
-      }, 1500)
-    }, 1000)
+      const data = await response.json()
+
+      if (response.ok) {
+        showToast("Login successful! Redirecting...", "success")
+        localStorage.setItem('user', JSON.stringify(data.user))
+        setTimeout(() => {
+          window.location.href = "../order/browse-meals.html"
+        }, 1500)
+      } else {
+        showToast(data.error || "Login failed", "error")
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      showToast("Network error. Please try again.", "error")
+    }
   })
 }
 
@@ -42,13 +50,33 @@ if (chefLoginForm) {
 
     console.log("[v0] Chef login attempt:", formData.email)
 
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      showToast("Login successful! Redirecting to dashboard...", "success")
-      setTimeout(() => {
-        window.location.href = "../meals/chef-upload.html"
-      }, 1500)
-    }, 1000)
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        if (data.user.role !== 'chef') {
+          showToast("This account is not authorized as a chef", "error")
+          return
+        }
+        
+        showToast("Login successful! Redirecting to dashboard...", "success")
+        localStorage.setItem('user', JSON.stringify(data.user))
+        setTimeout(() => {
+          window.location.href = "../meals/chef-upload.html"
+        }, 1500)
+      } else {
+        showToast(data.error || "Login failed", "error")
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      showToast("Network error. Please try again.", "error")
+    }
   })
 }
 
@@ -66,13 +94,33 @@ if (adminLoginForm) {
 
     console.log("[v0] Admin login attempt:", formData.email)
 
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      showToast("Admin authentication successful!", "success")
-      setTimeout(() => {
-        window.location.href = "../index.html" // Replace with admin dashboard
-      }, 1500)
-    }, 1000)
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        if (data.user.role !== 'admin') {
+          showToast("This account is not authorized as an admin", "error")
+          return
+        }
+        
+        showToast("Admin authentication successful!", "success")
+        localStorage.setItem('user', JSON.stringify(data.user))
+        setTimeout(() => {
+          window.location.href = "../index.html" // Replace with admin dashboard
+        }, 1500)
+      } else {
+        showToast(data.error || "Login failed", "error")
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      showToast("Network error. Please try again.", "error")
+    }
   })
 }
 
@@ -91,23 +139,35 @@ if (userRegisterForm) {
     }
 
     const formData = {
-      firstName: document.getElementById("firstName").value,
-      lastName: document.getElementById("lastName").value,
+      name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`,
       email: document.getElementById("email").value,
-      phone: document.getElementById("phone").value,
-      hostel: document.getElementById("hostel").value,
       password: password,
+      role: 'student'
     }
 
     console.log("[v0] User registration:", formData.email)
 
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      showToast("Registration successful! Please check your email to verify.", "success")
-      setTimeout(() => {
-        window.location.href = "../login/user-login.html"
-      }, 2000)
-    }, 1000)
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        showToast("Registration successful! Please check your email to verify.", "success")
+        setTimeout(() => {
+          window.location.href = "../login/user-login.html"
+        }, 2000)
+      } else {
+        showToast(data.error || "Registration failed", "error")
+      }
+    } catch (error) {
+      console.error('Registration error:', error)
+      showToast("Network error. Please try again.", "error")
+    }
   })
 }
 
@@ -126,26 +186,35 @@ if (chefRegisterForm) {
     }
 
     const formData = {
-      firstName: document.getElementById("firstName").value,
-      lastName: document.getElementById("lastName").value,
+      name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`,
       email: document.getElementById("email").value,
-      phone: document.getElementById("phone").value,
-      studentName: document.getElementById("studentName").value,
-      studentContact: document.getElementById("studentContact").value,
-      address: document.getElementById("address").value,
-      specialties: document.getElementById("specialties").value,
       password: password,
+      role: 'chef'
     }
 
     console.log("[v0] Chef registration:", formData.email)
 
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      showToast("Registration submitted! We'll review your application and contact you within 24 hours.", "success")
-      setTimeout(() => {
-        window.location.href = "../index.html"
-      }, 3000)
-    }, 1000)
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        showToast("Registration submitted! We'll review your application and contact you within 24 hours.", "success")
+        setTimeout(() => {
+          window.location.href = "../index.html"
+        }, 3000)
+      } else {
+        showToast(data.error || "Registration failed", "error")
+      }
+    } catch (error) {
+      console.error('Registration error:', error)
+      showToast("Network error. Please try again.", "error")
+    }
   })
 }
 
@@ -156,22 +225,35 @@ if (adminRegisterForm) {
     e.preventDefault()
 
     const formData = {
-      inviteCode: document.getElementById("inviteCode").value,
-      firstName: document.getElementById("firstName").value,
-      lastName: document.getElementById("lastName").value,
+      name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`,
       email: document.getElementById("email").value,
       password: document.getElementById("password").value,
+      role: 'admin'
     }
 
     console.log("[v0] Admin registration attempt")
 
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      showToast("Admin account created successfully!", "success")
-      setTimeout(() => {
-        window.location.href = "../login/admin-login.html"
-      }, 2000)
-    }, 1000)
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        showToast("Admin account created successfully!", "success")
+        setTimeout(() => {
+          window.location.href = "../login/admin-login.html"
+        }, 2000)
+      } else {
+        showToast(data.error || "Registration failed", "error")
+      }
+    } catch (error) {
+      console.error('Registration error:', error)
+      showToast("Network error. Please try again.", "error")
+    }
   })
 }
 
