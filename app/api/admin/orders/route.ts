@@ -18,30 +18,66 @@ export async function GET(request: NextRequest) {
     await client.connect();
     const db = client.db('ghar-ka-khana');
     
-    // Fetch all orders with sorting by creation date (newest first)
-    const orders = await db.collection('orders')
-      .find({})
-      .sort({ createdAt: -1 })
-      .limit(50) // Limit to recent 50 orders
-      .toArray();
-    
+    // Fetch all orders with user and chef details using aggregation
+    const orders = await db.collection('orders').aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'chef',
+          foreignField: '_id',
+          as: 'chefDetails'
+        }
+      },
+      {
+        $lookup: {
+          from: 'meals',
+          localField: 'meal',
+          foreignField: '_id',
+          as: 'mealDetails'
+        }
+      },
+      {
+        $unwind: { path: '$userDetails', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $unwind: { path: '$chefDetails', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $unwind: { path: '$mealDetails', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $sort: { createdAt: -1 }
+      },
+      {
+        $limit: 50
+      }
+    ]).toArray();
+
     // Transform orders data
     const transformedOrders = orders.map(order => ({
       id: order._id.toString(),
       user: {
-        id: order.user?.id || '',
-        name: order.user?.name || 'Unknown User',
-        email: order.user?.email || ''
+        id: order.user?.toString() || '',
+        name: order.userDetails?.name || 'Unknown User',
+        email: order.userDetails?.email || ''
       },
       chef: {
-        id: order.chef?.id || '',
-        name: order.chef?.name || 'Unknown Chef',
-        email: order.chef?.email || ''
+        id: order.chef?.toString() || '',
+        name: order.chefDetails?.name || 'Unknown Chef',
+        email: order.chefDetails?.email || ''
       },
       meal: {
-        id: order.meal?.id || '',
-        name: order.meal?.name || order.mealName || 'Unknown Meal',
-        price: order.meal?.price || order.price || 0
+        id: order.meal?.toString() || '',
+        name: order.mealDetails?.mealName || order.mealName || 'Unknown Meal',
+        price: order.mealDetails?.price || order.price || 0
       },
       quantity: order.quantity || 1,
       totalPrice: order.totalPrice || 0,

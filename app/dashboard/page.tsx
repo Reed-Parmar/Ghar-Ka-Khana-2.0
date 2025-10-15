@@ -1,5 +1,11 @@
 import { requireAuth } from '@/lib/session';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChefHat, Heart, Package, Star, TrendingUp, Users } from 'lucide-react';
@@ -51,23 +57,25 @@ export default async function DashboardPage() {
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{dashboardData.totalOrders}</div>
-            <p className="text-xs text-muted-foreground">
-              +2 from last month
-            </p>
+            <div className="text-2xl font-bold">
+              {dashboardData.totalOrders}
+            </div>
+            <p className="text-xs text-muted-foreground">+2 from last month</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Favorite Chefs</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Favorite Chefs
+            </CardTitle>
             <Heart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{dashboardData.favoriteChefs}</div>
-            <p className="text-xs text-muted-foreground">
-              +1 from last month
-            </p>
+            <div className="text-2xl font-bold">
+              {dashboardData.favoriteChefs}
+            </div>
+            <p className="text-xs text-muted-foreground">+1 from last month</p>
           </CardContent>
         </Card>
 
@@ -77,7 +85,9 @@ export default async function DashboardPage() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">₹{dashboardData.totalSpent}</div>
+            <div className="text-2xl font-bold">
+              ₹{dashboardData.totalSpent}
+            </div>
             <p className="text-xs text-muted-foreground">
               +370 from last month
             </p>
@@ -86,7 +96,9 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Rewards Points</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Rewards Points
+            </CardTitle>
             <Star className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -111,7 +123,7 @@ export default async function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {dashboardData.recentOrders.map((order) => (
+            {dashboardData.recentOrders.map(order => (
               <div
                 key={order.id}
                 className="flex items-center justify-between p-4 border rounded-lg"
@@ -123,7 +135,9 @@ export default async function DashboardPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Badge
-                    variant={order.status === 'delivered' ? 'default' : 'secondary'}
+                    variant={
+                      order.status === 'delivered' ? 'default' : 'secondary'
+                    }
                   >
                     {order.status}
                   </Badge>
@@ -186,11 +200,17 @@ export default async function DashboardPage() {
           <Package className="h-6 w-6" />
           <span>Browse Meals</span>
         </Button>
-        <Button variant="outline" className="h-24 flex flex-col items-center justify-center space-y-2">
+        <Button
+          variant="outline"
+          className="h-24 flex flex-col items-center justify-center space-y-2"
+        >
           <Users className="h-6 w-6" />
           <span>Find Chefs</span>
         </Button>
-        <Button variant="outline" className="h-24 flex flex-col items-center justify-center space-y-2">
+        <Button
+          variant="outline"
+          className="h-24 flex flex-col items-center justify-center space-y-2"
+        >
           <Heart className="h-6 w-6" />
           <span>Your Favorites</span>
         </Button>

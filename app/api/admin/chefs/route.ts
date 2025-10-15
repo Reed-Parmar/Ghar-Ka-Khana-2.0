@@ -18,38 +18,49 @@ export async function GET(request: NextRequest) {
     await client.connect();
     const db = client.db('ghar-ka-khana');
     
-    // Get all chef users
-    const chefUsers = await db.collection('users').find({ role: 'chef' }).toArray();
-    
-    // Get chef statistics (meals and orders)
-    const chefsWithStats = await Promise.all(
-      chefUsers.map(async (chef) => {
-        // Count meals by chef
-        const mealCount = await db.collection('meals').countDocuments({
-          'chef.email': chef.email
-        });
-        
-        // Get orders for this chef's meals and calculate stats
-        const orders = await db.collection('orders').find({
-          'chef.email': chef.email
-        }).toArray();
-        
-        const totalOrders = orders.length;
-        const revenue = orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
-        
-        return {
-          id: chef._id.toString(),
-          name: chef.name,
-          email: chef.email,
-          isApproved: chef.isApproved !== false, // Default to true if not set
-          totalMeals: mealCount,
-          totalOrders,
-          revenue,
-          rating: chef.rating || 0,
-          createdAt: chef.createdAt || new Date().toISOString()
-        };
-      })
-    );
+    // Get all chef users with their stats using aggregation
+    const chefsWithStats = await db.collection('users').aggregate([
+      {
+        $match: { role: 'chef' }
+      },
+      {
+        $lookup: {
+          from: 'meals',
+          localField: '_id',
+          foreignField: 'chef',
+          as: 'meals'
+        }
+      },
+      {
+        $lookup: {
+          from: 'orders',
+          localField: '_id',
+          foreignField: 'chef',
+          as: 'orders'
+        }
+      },
+      {
+        $project: {
+          id: { $toString: '$_id' },
+          name: 1,
+          email: 1,
+          isApproved: { $ifNull: ['$isApproved', true] },
+          totalMeals: { $size: '$meals' },
+          totalOrders: { $size: '$orders' },
+          revenue: {
+            $sum: {
+              $map: {
+                input: '$orders',
+                as: 'order',
+                in: { $ifNull: ['$$order.totalPrice', 0] }
+              }
+            }
+          },
+          rating: { $ifNull: ['$rating', 0] },
+          createdAt: { $ifNull: ['$createdAt', new Date()] }
+        }
+      }
+    ]).toArray();
 
     return NextResponse.json({
       success: true,

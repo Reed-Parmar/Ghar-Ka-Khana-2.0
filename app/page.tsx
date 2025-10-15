@@ -137,6 +137,11 @@ export default function HomePage() {
             {featuredMeals.map((meal) => (
               <Card key={meal.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="aspect-video bg-gray-200 relative">
+                  <img
+                    src={meal.image}
+                    alt={meal.name}
+                    className="w-full h-full object-cover"
+                  />
                   <div className="absolute top-4 left-4 flex gap-2">
                     {meal.tags.map((tag) => (
                       <Badge key={tag} variant="secondary">
