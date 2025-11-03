@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession, signOut } from '@/lib/authClient';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ChefHat, User, LogOut, Settings, Home } from 'lucide-react';
@@ -15,7 +15,7 @@ export default function Navbar() {
     await signOut({ callbackUrl: '/' });
   };
 
-  console.log('Navbar session:', session); // Debug log
+  // session is provided by our auth client; remove noisy console logs
 
   return (
     <nav className="border-b bg-background sticky top-0 z-40">

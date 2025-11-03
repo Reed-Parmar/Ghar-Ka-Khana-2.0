@@ -1,4 +1,8 @@
-import { requireAuth } from '@/lib/session';
+"use client";
+
+import { useEffect } from 'react';
+import { useSession } from '@/lib/authClient';
+import { useRouter } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -10,8 +14,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChefHat, Heart, Package, Star, TrendingUp, Users } from 'lucide-react';
 
-export default async function DashboardPage() {
-  const session = await requireAuth();
+export default function DashboardPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.replace('/login');
+    }
+  }, [status, router]);
 
   // Sample data - in a real app, this would come from your database
   const dashboardData = {
@@ -38,11 +49,19 @@ export default async function DashboardPage() {
     ],
   };
 
+  if (status !== 'authenticated') {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <h1 className="text-2xl font-semibold">Loading your dashboard…</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">
-          Welcome back, {session.user?.name}!
+          Welcome back, {session?.user?.name}!
         </h1>
         <p className="text-gray-600 mt-2">
           Track your orders and discover new homemade meals from local chefs.

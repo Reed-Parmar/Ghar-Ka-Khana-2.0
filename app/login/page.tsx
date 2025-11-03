@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, useSession } from '@/lib/authClient';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -50,42 +50,16 @@ export default function LoginPage() {
           title: 'Welcome back!',
           description: 'You have been successfully logged in.',
         });
-        
-        // Wait for session to be established, then redirect based on role
-        setTimeout(async () => {
-          try {
-            console.log('Attempting to fetch user profile...');
-            const response = await fetch('/api/user/profile');
-            console.log('Profile API response status:', response.status);
-            
-            if (response.ok) {
-              const data = await response.json();
-              const userRole = data.user.role;
-              console.log('User role from API:', userRole);
-              
-              // Redirect based on user role
-              if (userRole === 'admin') {
-                console.log('Redirecting to admin dashboard');
-                window.location.href = '/admin/dashboard';
-              } else if (userRole === 'chef') {
-                console.log('Redirecting to chef dashboard');
-                window.location.href = '/chef/dashboard';
-              } else if (userRole === 'student') {
-                console.log('Redirecting to student dashboard');
-                window.location.href = '/student/dashboard';
-              } else {
-                console.log('Redirecting to general dashboard');
-                window.location.href = '/dashboard';
-              }
-            } else {
-              console.log('Failed to fetch user profile, redirecting to general dashboard');
-              window.location.href = '/dashboard';
-            }
-          } catch (error) {
-            console.error('Error fetching user profile:', error);
-            window.location.href = '/dashboard';
-          }
-        }, 1000);
+        const userRole = result?.user?.role;
+        if (userRole === 'admin') {
+          window.location.href = '/admin/dashboard';
+        } else if (userRole === 'chef') {
+          window.location.href = '/chef/dashboard';
+        } else if (userRole === 'student') {
+          window.location.href = '/student/dashboard';
+        } else {
+          window.location.href = '/dashboard';
+        }
       }
     } catch (error) {
       setError('An unexpected error occurred. Please try again.');

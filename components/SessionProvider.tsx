@@ -1,19 +1,14 @@
 'use client';
 
-import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react';
 import { ReactNode } from 'react';
+import SessionProvider from '@/lib/authClient';
 
 interface SessionProviderProps {
   children: ReactNode;
 }
 
-export default function SessionProvider({ children }: SessionProviderProps) {
-  return (
-    <NextAuthSessionProvider
-      refetchInterval={5 * 60} // Refetch session every 5 minutes
-      refetchOnWindowFocus={true}
-    >
-      {children}
-    </NextAuthSessionProvider>
-  );
+// Lightweight wrapper that delegates to the local auth shim. Keep this file so
+// layout imports remain unchanged while NextAuth is removed.
+export default function LocalSessionProvider({ children }: SessionProviderProps) {
+  return <SessionProvider>{children}</SessionProvider>;
 }
