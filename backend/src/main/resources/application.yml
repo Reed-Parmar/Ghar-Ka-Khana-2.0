@@ -1,0 +1,17 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ghar-ka-khana
+      auto-index-creation: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# Logging configuration
+logging:
+  level:
+    org.springframework.data.mongodb: INFO
+    org.springframework.security: INFO
+    com.gharkakhana.backend: DEBUG

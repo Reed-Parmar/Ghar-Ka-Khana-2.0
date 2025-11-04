@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
+import { usersAPI, ordersAPI } from '@/lib/api-client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -35,21 +36,21 @@ interface Order {
 }
 
 export default function StudentDashboard() {
-  const { data: session, status } = useSession();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (status === 'loading') return;
+    if (isLoading) return;
     
-    if (!session) {
+    if (!user) {
       router.push('/login');
       return;
     }
 
-    if (session.user?.role !== 'student') {
+    if (user.role !== 'student') {
       toast({
         title: 'Access Denied',
         description: 'This dashboard is only for students.',
@@ -60,30 +61,13 @@ export default function StudentDashboard() {
     }
 
     fetchOrders();
-  }, [session, status, router]);
+  }, [user, isLoading, router]);
 
   const fetchOrders = async () => {
     try {
-      // Get current user profile with ID
-      const userResponse = await fetch('/api/user/profile');
-      
-      if (!userResponse.ok) {
-        console.log('Failed to fetch user profile');
-        setLoading(false);
-        return;
-      }
-
-      const userData = await userResponse.json();
-      const userId = userData.user.id;
-
-      const response = await fetch(`/api/orders/user/${userId}`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        setOrders(data.orders || []);
-      } else {
-        console.error('Failed to fetch orders');
-      }
+      const userData = await usersAPI.getById('me');
+      const userOrders = await ordersAPI.getUserOrders(userData.id);
+      setOrders(userOrders || []);
     } catch (error) {
       console.error('Error fetching orders:', error);
     } finally {
@@ -150,7 +134,7 @@ export default function StudentDashboard() {
     );
   }
 
-  if (!session || session.user?.role !== 'student') {
+  if (!user || user.role !== 'student') {
     return null;
   }
 
@@ -159,7 +143,7 @@ export default function StudentDashboard() {
       {/* Welcome Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Welcome back, {session.user.name}!</h1>
+          <h1 className="text-3xl font-bold">Welcome back, {user.name}!</h1>
           <p className="text-muted-foreground">Manage your orders and discover new meals</p>
         </div>
         <Button asChild>
@@ -304,20 +288,20 @@ export default function StudentDashboard() {
               <div className="flex items-center space-x-3">
                 <User className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">{session.user.name}</p>
+                  <p className="font-medium">{user.name}</p>
                   <p className="text-sm text-muted-foreground">Full Name</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">{session.user.email}</p>
+                  <p className="font-medium">{user.email}</p>
                   <p className="text-sm text-muted-foreground">Email Address</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <Badge variant="outline" className="capitalize">
-                  {session.user.role} Account
+                  {user.role} Account
                 </Badge>
               </div>
             </CardContent>

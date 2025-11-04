@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
+import { adminAPI } from '@/lib/api-client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -96,7 +97,7 @@ interface PlatformStats {
 }
 
 export default function AdminDashboard() {
-  const { data: session, status } = useSession();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   
@@ -117,14 +118,14 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (status === 'loading') return;
+    if (isLoading) return;
     
-    if (!session) {
+    if (!user) {
       router.push('/login');
       return;
     }
 
-    if (session.user?.role !== 'admin') {
+    if (user.role !== 'admin') {
       toast({
         title: 'Access Denied',
         description: 'This dashboard is only for administrators.',
@@ -135,7 +136,7 @@ export default function AdminDashboard() {
     }
 
     fetchDashboardData();
-  }, [session, status, router]);
+  }, [user, isLoading, router]);
 
   const fetchDashboardData = async () => {
     try {
@@ -160,11 +161,8 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/admin/users');
-      if (response.ok) {
-        const data = await response.json();
-        setUsers(data.users || []);
-      }
+      const users = await adminAPI.getUsers();
+      setUsers(users || []);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -172,11 +170,8 @@ export default function AdminDashboard() {
 
   const fetchChefs = async () => {
     try {
-      const response = await fetch('/api/admin/chefs');
-      if (response.ok) {
-        const data = await response.json();
-        setChefs(data.chefs || []);
-      }
+      const chefs = await adminAPI.getChefs();
+      setChefs(chefs || []);
     } catch (error) {
       console.error('Error fetching chefs:', error);
     }
@@ -184,11 +179,8 @@ export default function AdminDashboard() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('/api/admin/orders');
-      if (response.ok) {
-        const data = await response.json();
-        setOrders(data.orders || []);
-      }
+      const allOrders = await adminAPI.getOrders();
+      setOrders(allOrders || []);
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
@@ -196,11 +188,8 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('/api/admin/stats');
-      if (response.ok) {
-        const data = await response.json();
-        setStats(data.stats || stats);
-      }
+      const dashboardStats = await adminAPI.getStats();
+      setStats(dashboardStats || stats);
     } catch (error) {
       console.error('Error fetching stats:', error);
     }
@@ -321,7 +310,7 @@ export default function AdminDashboard() {
     );
   }
 
-  if (!session || session.user?.role !== 'admin') {
+  if (!user || user.role !== 'admin') {
     return null;
   }
 
@@ -334,7 +323,7 @@ export default function AdminDashboard() {
             <Shield className="h-8 w-8 text-primary" />
             Admin Dashboard
           </h1>
-          <p className="text-muted-foreground">Welcome back, {session.user.name}!</p>
+          <p className="text-muted-foreground">Welcome back, {user.name}!</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" asChild>

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ChefHat, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/components/AuthProvider';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -20,10 +20,14 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const router = useRouter();
   const { toast } = useToast();
-  const { data: session, status } = useSession();
+  const { login, user } = useAuth();
 
-  // Remove the useEffect that was causing infinite loops
-  // The redirect is now handled directly in the handleSubmit function
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      router.push('/dashboard');
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,13 +35,9 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
+      const success = await login(email, password);
 
-      if (result?.error) {
+      if (!success) {
         setError('Invalid email or password');
         toast({
           title: 'Login Failed',
@@ -45,55 +45,53 @@ export default function LoginPage() {
           variant: 'destructive',
         });
       } else {
-        console.log('Login successful, result:', result);
         toast({
           title: 'Welcome back!',
           description: 'You have been successfully logged in.',
         });
-        
-        // Wait for session to be established, then redirect based on role
-        setTimeout(async () => {
-          try {
-            console.log('Attempting to fetch user profile...');
-            const response = await fetch('/api/user/profile');
-            console.log('Profile API response status:', response.status);
+
+        // Get the user role and redirect
+        try {
+          console.log('Attempting to fetch user profile...');
+          const response = await fetch('/api/user/profile');
+          console.log('Profile API response status:', response.status);
+          
+          if (response.ok) {
+            const data = await response.json();
+            const userRole = data.user.role;
+            console.log('User role from API:', userRole);
             
-            if (response.ok) {
-              const data = await response.json();
-              const userRole = data.user.role;
-              console.log('User role from API:', userRole);
-              
-              // Redirect based on user role
-              if (userRole === 'admin') {
-                console.log('Redirecting to admin dashboard');
-                window.location.href = '/admin/dashboard';
-              } else if (userRole === 'chef') {
-                console.log('Redirecting to chef dashboard');
-                window.location.href = '/chef/dashboard';
-              } else if (userRole === 'student') {
-                console.log('Redirecting to student dashboard');
-                window.location.href = '/student/dashboard';
-              } else {
-                console.log('Redirecting to general dashboard');
-                window.location.href = '/dashboard';
-              }
+            // Redirect based on user role
+            if (userRole === 'admin') {
+              router.push('/admin/dashboard');
+            } else if (userRole === 'chef') {
+              router.push('/chef/dashboard');
+            } else if (userRole === 'student') {
+              router.push('/student/dashboard');
             } else {
-              console.log('Failed to fetch user profile, redirecting to general dashboard');
-              window.location.href = '/dashboard';
+              router.push('/dashboard');
             }
-          } catch (error) {
-            console.error('Error fetching user profile:', error);
-            window.location.href = '/dashboard';
+          } else {
+            router.push('/dashboard');
           }
-        }, 1000);
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+          router.push('/dashboard');
+        }
       }
-    } catch (error) {
-      setError('An unexpected error occurred. Please try again.');
-      toast({
-        title: 'Error',
-        description: 'An unexpected error occurred. Please try again.',
-        variant: 'destructive',
-      });
+    } catch (error: any) {
+      console.error('Login error:', error);
+      const message = error?.message && error.message !== 'An error occurred' && error.message !== 'An unexpected error occurred'
+        ? error.message
+        : '';
+      setError(message);
+      if (message) {
+        toast({
+          title: 'Error',
+          description: message,
+          variant: 'destructive',
+        });
+      }
     } finally {
       setIsLoading(false);
     }

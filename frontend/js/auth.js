@@ -18,7 +18,7 @@ if (userLoginForm) {
         body: JSON.stringify(formData)
       })
 
-      const data = await response.json()
+      const data = await parseResponse(response)
 
       if (response.ok) {
         showToast("Login successful! Redirecting...", "success")
@@ -57,7 +57,7 @@ if (chefLoginForm) {
         body: JSON.stringify(formData)
       })
 
-      const data = await response.json()
+      const data = await parseResponse(response)
 
       if (response.ok) {
         if (data.user.role !== 'chef') {
@@ -101,7 +101,7 @@ if (adminLoginForm) {
         body: JSON.stringify(formData)
       })
 
-      const data = await response.json()
+      const data = await parseResponse(response)
 
       if (response.ok) {
         if (data.user.role !== 'admin') {
@@ -154,7 +154,7 @@ if (userRegisterForm) {
         body: JSON.stringify(formData)
       })
 
-      const data = await response.json()
+      const data = await parseResponse(response)
 
       if (response.ok) {
         showToast("Registration successful! Please check your email to verify.", "success")
@@ -201,7 +201,7 @@ if (chefRegisterForm) {
         body: JSON.stringify(formData)
       })
 
-      const data = await response.json()
+      const data = await parseResponse(response)
 
       if (response.ok) {
         showToast("Registration submitted! We'll review your application and contact you within 24 hours.", "success")
@@ -240,7 +240,7 @@ if (adminRegisterForm) {
         body: JSON.stringify(formData)
       })
 
-      const data = await response.json()
+      const data = await parseResponse(response)
 
       if (response.ok) {
         showToast("Admin account created successfully!", "success")
@@ -333,3 +333,22 @@ phoneInputs.forEach((input) => {
     e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10)
   })
 })
+
+// Safely parse API responses that may be empty or non-JSON
+async function parseResponse(response) {
+  try {
+    const contentType = response.headers.get('content-type') || ''
+    const text = await response.text()
+    if (!text) return {}
+    if (contentType.includes('application/json')) {
+      try {
+        return JSON.parse(text)
+      } catch (_) {
+        return { error: text }
+      }
+    }
+    return { error: text }
+  } catch (e) {
+    return { error: 'Unexpected response from server' }
+  }
+}

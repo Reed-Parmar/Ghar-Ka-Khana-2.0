@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
+import { useAuth } from './AuthProvider';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ChefHat, User, LogOut, Settings, Home } from 'lucide-react';
@@ -9,13 +9,13 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 
 export default function Navbar() {
-  const { data: session, status } = useSession();
+  const { user, logout, isLoading } = useAuth();
 
-  const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/' });
+  const handleSignOut = () => {
+    logout();
   };
 
-  console.log('Navbar session:', session); // Debug log
+  console.log('Navbar user:', user); // Debug log
 
   return (
     <nav className="border-b bg-background sticky top-0 z-40">
@@ -57,15 +57,15 @@ export default function Navbar() {
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
-            {status === 'loading' ? (
+            {isLoading ? (
               <div className="h-8 w-20 bg-muted animate-pulse rounded-md" />
-            ) : session ? (
+            ) : user ? (
               <Menu as="div" className="relative">
                 <Menu.Button className="flex items-center rounded-full bg-background hover:bg-muted p-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={session.user?.image || ''} alt={session.user?.name || ''} />
+                    <AvatarImage src={user.profilePicture || ''} alt={user.name || ''} />
                     <AvatarFallback className="bg-primary text-primary-foreground">
-                      {session.user?.name?.charAt(0).toUpperCase() || 'U'}
+                      {user.name?.charAt(0).toUpperCase() || 'U'}
                     </AvatarFallback>
                   </Avatar>
                 </Menu.Button>
@@ -81,15 +81,15 @@ export default function Navbar() {
                 >
                   <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                     <div className="px-4 py-3">
-                      <p className="text-sm font-medium text-gray-900">{session.user?.name}</p>
-                      <p className="text-sm text-gray-500 truncate">{session.user?.email}</p>
+                      <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                      <p className="text-sm text-gray-500 truncate">{user.email}</p>
                       <p className="text-xs text-primary font-medium capitalize mt-1">
-                        {session.user?.role} Account
+                        {user.role} Account
                       </p>
                     </div>
 
                     <div className="py-1">
-                      {session.user?.role === 'student' && (
+                      {user.role === 'student' && (
                         <Menu.Item>
                           {({ active }) => (
                             <Link
@@ -105,7 +105,7 @@ export default function Navbar() {
                         </Menu.Item>
                       )}
                       
-                      {session.user?.role === 'chef' && (
+                      {user.role === 'chef' && (
                         <Menu.Item>
                           {({ active }) => (
                             <Link
@@ -121,7 +121,7 @@ export default function Navbar() {
                         </Menu.Item>
                       )}
                       
-                      {session.user?.role === 'admin' && (
+                      {user.role === 'admin' && (
                         <Menu.Item>
                           {({ active }) => (
                             <Link

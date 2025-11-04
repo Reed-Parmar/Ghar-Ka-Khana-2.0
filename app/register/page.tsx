@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ChefHat, Eye, EyeOff, User, Crown, UtensilsCrossed } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { UserRole } from '@/lib/models/User';
+import { authAPI } from '@/lib/api-client';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -44,24 +45,12 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          role,
-        }),
+      await authAPI.register({
+        name,
+        email,
+        password,
+        role,
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
 
       toast({
         title: 'Registration Successful!',
@@ -70,12 +59,18 @@ export default function RegisterPage() {
 
       router.push('/login');
     } catch (error: any) {
-      setError(error.message || 'An unexpected error occurred');
-      toast({
-        title: 'Registration Failed',
-        description: error.message || 'An unexpected error occurred',
-        variant: 'destructive',
-      });
+      console.error('Registration error:', error);
+      const message = error?.message && error.message !== 'An error occurred' && error.message !== 'An unexpected error occurred'
+        ? error.message
+        : '';
+      setError(message);
+      if (message) {
+        toast({
+          title: 'Registration Failed',
+          description: message,
+          variant: 'destructive',
+        });
+      }
     } finally {
       setIsLoading(false);
     }

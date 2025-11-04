@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/components/AuthProvider';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { mealsAPI, ordersAPI } from '@/lib/api-client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -36,7 +37,7 @@ interface PaginationInfo {
 }
 
 export default function MealsPage() {
-  const { data: session } = useSession();
+  const { user } = useAuth();
   const { toast } = useToast();
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,19 +71,9 @@ export default function MealsPage() {
       if (minPrice) params.append('minPrice', minPrice);
       if (maxPrice) params.append('maxPrice', maxPrice);
 
-      const response = await fetch(`/api/meals/all?${params}`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        setMeals(data.meals || []);
-        setPagination(data.pagination);
-      } else {
-        toast({
-          title: 'Error',
-          description: 'Failed to fetch meals',
-          variant: 'destructive',
-        });
-      }
+      const data = await mealsAPI.listAll();
+      setMeals(data.meals || []);
+      setPagination(data.pagination);
     } catch (error) {
       console.error('Error fetching meals:', error);
       toast({
@@ -96,7 +87,7 @@ export default function MealsPage() {
   };
 
   const handleOrderMeal = async (mealId: string, mealName: string) => {
-    if (!session) {
+    if (!user) {
       toast({
         title: 'Login Required',
         description: 'Please login to place an order',
@@ -105,7 +96,7 @@ export default function MealsPage() {
       return;
     }
 
-    if (session.user?.role === 'chef') {
+    if (user.role === 'chef') {
       toast({
         title: 'Access Denied',
         description: 'Chefs cannot place orders. Switch to student account to order meals.',
@@ -232,7 +223,7 @@ export default function MealsPage() {
         <p className="text-sm text-muted-foreground">
           Found {pagination.totalMeals} meals
         </p>
-        {session?.user?.role === 'student' && (
+        {user?.role === 'student' && (
           <Button asChild variant="outline">
             <Link href="/student/dashboard">My Dashboard</Link>
           </Button>
@@ -301,8 +292,8 @@ export default function MealsPage() {
                 
                 <div className="flex items-center justify-between pt-2">
                   <div className="text-xl font-bold text-primary">₹{meal.price}</div>
-                  {session ? (
-                    session.user?.role !== 'chef' ? (
+                  {user ? (
+                    user.role !== 'chef' ? (
                       <Button 
                         size="sm" 
                         onClick={() => handleOrderMeal(meal.id, meal.mealName)}

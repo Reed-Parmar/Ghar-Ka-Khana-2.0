@@ -4,7 +4,7 @@ import { GeistMono } from 'geist/font/mono';
 // import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import SessionProvider from '@/components/SessionProvider';
+import { AuthProvider } from '@/components/AuthProvider';
 import Navbar from '@/components/Navbar';
 import './globals.css';
 
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-        <SessionProvider>
+        <AuthProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -35,7 +35,7 @@ export default function RootLayout({
               <Toaster />
             </div>
           </ThemeProvider>
-        </SessionProvider>
+        </AuthProvider>
         {/* <Analytics /> */}
       </body>
     </html>

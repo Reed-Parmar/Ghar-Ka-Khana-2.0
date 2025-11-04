@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { mealsAPI, ordersAPI, usersAPI } from '@/lib/api-client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -70,7 +71,7 @@ interface Order {
 }
 
 export default function ChefDashboard() {
-  const { data: session, status } = useSession();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   
@@ -95,14 +96,14 @@ export default function ChefDashboard() {
   const [imagePreview, setImagePreview] = useState<string>('');
 
   useEffect(() => {
-    if (status === 'loading') return;
+    if (isLoading) return;
     
-    if (!session) {
+    if (!user) {
       router.push('/login');
       return;
     }
 
-    if (session.user?.role !== 'chef') {
+    if (user.role !== 'chef') {
       toast({
         title: 'Access Denied',
         description: 'This dashboard is only for chefs.',
@@ -113,22 +114,18 @@ export default function ChefDashboard() {
     }
 
     fetchUserData();
-  }, [session, status, router]);
+  }, [user, isLoading, router]);
 
   const fetchUserData = async () => {
     try {
       // Get current user profile
-      const userResponse = await fetch('/api/user/profile');
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
-        setUserId(userData.user.id);
-        
-        // Fetch orders for this chef
-        fetchOrders(userData.user.id);
-      }
+      const userData = await usersAPI.getById('me');
+      setUserId(userData.id);
       
-      // Note: We'll fetch meals differently since we need to get chef's meals
-      // For now, we'll fetch all meals and filter, but ideally we'd have a chef-specific endpoint
+      // Fetch orders for this chef
+      fetchOrders(userData.id);
+      
+      // Fetch meals for this chef
       fetchMeals();
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -139,17 +136,8 @@ export default function ChefDashboard() {
 
   const fetchMeals = async () => {
     try {
-      // For now, we'll fetch all meals and filter by chef email
-      // In a real app, you'd have a chef-specific endpoint
-      const response = await fetch('/api/meals/all?limit=100');
-      if (response.ok) {
-        const data = await response.json();
-        // Filter meals by current chef
-        const chefMeals = data.meals.filter((meal: any) => 
-          meal.chef.email === session?.user?.email
-        );
-        setMeals(chefMeals);
-      }
+      const chefMeals = await mealsAPI.getChefMeals(user?.id || '');
+      setMeals(chefMeals);
     } catch (error) {
       console.error('Error fetching meals:', error);
     }
@@ -157,11 +145,8 @@ export default function ChefDashboard() {
 
   const fetchOrders = async (chefId: string) => {
     try {
-      const response = await fetch(`/api/orders/chef/${chefId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setOrders(data.orders || []);
-      }
+      const orders = await ordersAPI.getChefOrders(chefId);
+      setOrders(orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
@@ -313,7 +298,7 @@ export default function ChefDashboard() {
     );
   }
 
-  if (!session || session.user?.role !== 'chef') {
+  if (!user || user.role !== 'chef') {
     return null;
   }
 
@@ -330,7 +315,7 @@ export default function ChefDashboard() {
             <ChefHat className="h-8 w-8 text-primary" />
             Chef Dashboard
           </h1>
-          <p className="text-muted-foreground">Welcome back, {session.user.name}!</p>
+          <p className="text-muted-foreground">Welcome back, {user.name}!</p>
         </div>
         <Button asChild>
           <Link href="/meals">View All Meals</Link>
