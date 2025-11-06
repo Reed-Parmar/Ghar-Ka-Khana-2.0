@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from '@/lib/authClient';
+import { useSession, authFetch } from '@/lib/authClient';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -160,10 +160,10 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/admin/users');
+      const response = await authFetch('/api/admin/users');
       if (response.ok) {
         const data = await response.json();
-        setUsers(data.users || []);
+        setUsers(data || []);
       }
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -172,10 +172,11 @@ export default function AdminDashboard() {
 
   const fetchChefs = async () => {
     try {
-      const response = await fetch('/api/admin/chefs');
+      // Spring Boot uses /api/chefs endpoint for all chefs (admin sees all)
+      const response = await authFetch('/api/chefs');
       if (response.ok) {
         const data = await response.json();
-        setChefs(data.chefs || []);
+        setChefs(data || []);
       }
     } catch (error) {
       console.error('Error fetching chefs:', error);
@@ -184,10 +185,10 @@ export default function AdminDashboard() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('/api/admin/orders');
+      const response = await authFetch('/api/admin/orders');
       if (response.ok) {
         const data = await response.json();
-        setOrders(data.orders || []);
+        setOrders(data || []);
       }
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -196,7 +197,7 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('/api/admin/stats');
+      const response = await authFetch('/api/admin/stats');
       if (response.ok) {
         const data = await response.json();
         setStats(data.stats || stats);
@@ -208,8 +209,8 @@ export default function AdminDashboard() {
 
   const handleUserStatusChange = async (userId: string, isActive: boolean) => {
     try {
-      const response = await fetch(`/api/admin/users/${userId}/status`, {
-        method: 'PATCH',
+      const response = await authFetch(`/api/admin/users/${userId}/status`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive }),
       });
@@ -234,8 +235,8 @@ export default function AdminDashboard() {
 
   const handleChefApproval = async (chefId: string, isApproved: boolean) => {
     try {
-      const response = await fetch(`/api/admin/chefs/${chefId}/approval`, {
-        method: 'PATCH',
+      const response = await authFetch(`/api/admin/chefs/${chefId}/approval`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isApproved }),
       });

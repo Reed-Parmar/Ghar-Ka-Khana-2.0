@@ -56,26 +56,47 @@ export default function MealsPage() {
 
   useEffect(() => {
     fetchMeals();
-  }, [currentPage, search, minPrice, maxPrice]);
+  }, [search, minPrice, maxPrice]); // Removed currentPage dependency
 
   const fetchMeals = async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({
-        page: currentPage.toString(),
-        limit: '12',
-      });
-      
-      if (search) params.append('search', search);
-      if (minPrice) params.append('minPrice', minPrice);
-      if (maxPrice) params.append('maxPrice', maxPrice);
-
-      const response = await fetch(`/api/meals/all?${params}`);
+      // Spring Boot returns a direct array, not paginated response
+      const response = await fetch(`/api/meals`);
       
       if (response.ok) {
         const data = await response.json();
-        setMeals(data.meals || []);
-        setPagination(data.pagination);
+        // Spring Boot returns array directly
+        const mealsArray = Array.isArray(data) ? data : [];
+        
+        // Apply client-side filtering if needed
+        let filteredMeals = mealsArray;
+        
+        if (search) {
+          filteredMeals = filteredMeals.filter(meal => 
+            meal.mealName?.toLowerCase().includes(search.toLowerCase()) ||
+            meal.description?.toLowerCase().includes(search.toLowerCase())
+          );
+        }
+        
+        if (minPrice) {
+          filteredMeals = filteredMeals.filter(meal => meal.price >= parseFloat(minPrice));
+        }
+        
+        if (maxPrice) {
+          filteredMeals = filteredMeals.filter(meal => meal.price <= parseFloat(maxPrice));
+        }
+        
+        setMeals(filteredMeals);
+        
+        // Update pagination for client-side pagination
+        setPagination({
+          currentPage: 1,
+          totalPages: 1,
+          totalMeals: filteredMeals.length,
+          hasNext: false,
+          hasPrev: false,
+        });
       } else {
         toast({
           title: 'Error',

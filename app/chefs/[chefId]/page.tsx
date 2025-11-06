@@ -98,22 +98,19 @@ export default function ChefProfilePage() {
       const chefResponse = await fetch(`/api/chefs/${params.chefId}`);
       if (chefResponse.ok) {
         const chefData = await chefResponse.json();
-        setChef(chefData.chef);
+        setChef(chefData);
       }
 
-      // Fetch chef's meals
-      const mealsResponse = await fetch(`/api/chefs/${params.chefId}/meals`);
+      // Fetch chef's meals using Spring Boot endpoint
+      const mealsResponse = await fetch(`/api/meals/chef/${params.chefId}/active`);
       if (mealsResponse.ok) {
         const mealsData = await mealsResponse.json();
-        setMeals(mealsData.meals || []);
+        setMeals(mealsData || []);
       }
 
-      // Fetch chef's reviews
-      const reviewsResponse = await fetch(`/api/chefs/${params.chefId}/reviews`);
-      if (reviewsResponse.ok) {
-        const reviewsData = await reviewsResponse.json();
-        setReviews(reviewsData.reviews || []);
-      }
+      // Reviews endpoint not yet implemented in Spring Boot
+      // TODO: Implement reviews feature
+      setReviews([]);
 
     } catch (error) {
       console.error('Error fetching chef profile:', error);

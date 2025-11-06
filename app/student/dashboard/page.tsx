@@ -64,23 +64,16 @@ export default function StudentDashboard() {
 
   const fetchOrders = async () => {
     try {
-      // Get current user profile with ID
-      const userResponse = await fetch('/api/user/profile');
-      
-      if (!userResponse.ok) {
-        console.log('Failed to fetch user profile');
-        setLoading(false);
-        return;
-      }
-
-      const userData = await userResponse.json();
-      const userId = userData.user.id;
-
-      const response = await fetch(`/api/orders/user/${userId}`);
+      // Spring Boot endpoint returns orders for authenticated user automatically
+      const response = await fetch('/api/orders/my-orders', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('ghk_token')}`,
+        },
+      });
       
       if (response.ok) {
         const data = await response.json();
-        setOrders(data.orders || []);
+        setOrders(data || []);
       } else {
         console.error('Failed to fetch orders');
       }

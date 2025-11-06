@@ -64,19 +64,33 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   const load = useCallback(async () => {
     const token = getToken();
     if (!token) {
+      console.log('[AuthClient] No token found, marking as unauthenticated');
       setData(null);
       setStatus('unauthenticated');
       return;
     }
     setStatus('loading');
     try {
+      console.log('[AuthClient] Fetching profile with token...');
       const profile = await fetchProfile(token);
-      const user = profile?.user ?? profile; // accept either {user: {...}} or direct user
+      // Spring Boot returns direct user object: {id, name, email, role}
+      // NOT wrapped in {user: {...}}
+      const user = profile?.user ?? profile;
+      
+      // Validate that we got a proper user object with required fields
+      if (!user || !user.email || !user.role) {
+        throw new Error('Invalid user profile response');
+      }
+      
+      console.log('[AuthClient] Profile loaded successfully:', { email: user.email, role: user.role });
       setData({ user });
       // Cache for quick warm start
       try { localStorage.setItem(SESSION_KEY, JSON.stringify({ user })); } catch {}
       setStatus('authenticated');
     } catch (e) {
+      console.error('[AuthClient] Failed to load user profile:', e);
+      // Clear invalid token and session
+      setSession(null, null);
       setData(null);
       setStatus('unauthenticated');
     }
@@ -88,13 +102,22 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       const raw = typeof window !== 'undefined' ? localStorage.getItem(SESSION_KEY) : null;
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed?.user) {
+        if (parsed?.user && parsed.user.email && parsed.user.role) {
+          console.log('[AuthClient] Using cached session:', { email: parsed.user.email, role: parsed.user.role });
           setData({ user: parsed.user });
           setStatus('authenticated');
         }
       }
-    } catch {}
+    } catch (e) {
+      console.error('[AuthClient] Failed to parse cached session:', e);
+      // Clear corrupted cache
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(SESSION_KEY);
+      }
+    }
 
+    // Always verify with backend
+    console.log('[AuthClient] Verifying session with backend...');
     load();
 
     const onAuth = () => load();

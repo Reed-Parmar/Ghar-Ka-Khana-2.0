@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from '@/lib/authClient';
+import { useSession, authFetch } from '@/lib/authClient';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -118,15 +118,17 @@ export default function ChefDashboard() {
   const fetchUserData = async () => {
     try {
       // Get current user profile
-      const userResponse = await fetch('/api/user/profile');
+      const userResponse = await authFetch('/api/user/profile');
       if (userResponse.ok) {
         const userData = await userResponse.json();
-        setUserId(userData.user.id);
-        
+        // Spring Boot returns user directly: {id, name, email, role}
+        const userId = userData.id || userData.user?.id;
+        setUserId(userId);
+
         // Fetch orders for this chef
-        fetchOrders(userData.user.id);
+        fetchOrders(userId);
       }
-      
+
       // Note: We'll fetch meals differently since we need to get chef's meals
       // For now, we'll fetch all meals and filter, but ideally we'd have a chef-specific endpoint
       fetchMeals();
@@ -139,14 +141,14 @@ export default function ChefDashboard() {
 
   const fetchMeals = async () => {
     try {
-      // For now, we'll fetch all meals and filter by chef email
-      // In a real app, you'd have a chef-specific endpoint
-      const response = await fetch('/api/meals/all?limit=100');
+      // Fetch chef's meals using the Spring Boot endpoint
+      const response = await authFetch('/api/meals');
       if (response.ok) {
         const data = await response.json();
-        // Filter meals by current chef
-        const chefMeals = data.meals.filter((meal: any) => 
-          meal.chef.email === session?.user?.email
+        // The Spring Boot endpoint returns all active meals
+        // Filter by current chef's email
+        const chefMeals = data.filter((meal: any) =>
+          meal.chef?.email === session?.user?.email
         );
         setMeals(chefMeals);
       }
@@ -157,10 +159,10 @@ export default function ChefDashboard() {
 
   const fetchOrders = async (chefId: string) => {
     try {
-      const response = await fetch(`/api/orders/chef/${chefId}`);
+      const response = await authFetch(`/api/orders/chef-orders`);
       if (response.ok) {
         const data = await response.json();
-        setOrders(data.orders || []);
+        setOrders(data || []);
       }
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -214,7 +216,7 @@ export default function ChefDashboard() {
     setSubmitting(true);
 
     try {
-      const response = await fetch('/api/meals/upload', {
+      const response = await authFetch('/api/meals', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(mealForm),
