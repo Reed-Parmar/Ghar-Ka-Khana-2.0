@@ -95,14 +95,18 @@ export default function ChefDashboard() {
   const [imagePreview, setImagePreview] = useState<string>('');
 
   useEffect(() => {
+    console.log('[ChefDashboard] Status:', status, 'Session:', session);
+    
     if (status === 'loading') return;
     
     if (!session) {
+      console.log('[ChefDashboard] No session, redirecting to login');
       router.push('/login');
       return;
     }
 
     if (session.user?.role !== 'chef') {
+      console.log('[ChefDashboard] Not chef role:', session.user?.role);
       toast({
         title: 'Access Denied',
         description: 'This dashboard is only for chefs.',
@@ -112,6 +116,7 @@ export default function ChefDashboard() {
       return;
     }
 
+    console.log('[ChefDashboard] Access granted, fetching data');
     fetchUserData();
   }, [session, status, router]);
 

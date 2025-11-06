@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from '@/lib/authClient';
+import { useSession, authFetch } from '@/lib/authClient';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -42,14 +42,18 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('[StudentDashboard] Status:', status, 'Session:', session);
+    
     if (status === 'loading') return;
     
     if (!session) {
+      console.log('[StudentDashboard] No session, redirecting to login');
       router.push('/login');
       return;
     }
 
     if (session.user?.role !== 'student') {
+      console.log('[StudentDashboard] Not student role:', session.user?.role);
       toast({
         title: 'Access Denied',
         description: 'This dashboard is only for students.',
@@ -59,17 +63,14 @@ export default function StudentDashboard() {
       return;
     }
 
+    console.log('[StudentDashboard] Access granted, fetching orders');
     fetchOrders();
   }, [session, status, router]);
 
   const fetchOrders = async () => {
     try {
       // Spring Boot endpoint returns orders for authenticated user automatically
-      const response = await fetch('/api/orders/my-orders', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('ghk_token')}`,
-        },
-      });
+      const response = await authFetch('/api/orders/my-orders');
       
       if (response.ok) {
         const data = await response.json();

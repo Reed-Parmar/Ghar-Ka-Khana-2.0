@@ -117,14 +117,18 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('[AdminDashboard] Status:', status, 'Session:', session);
+    
     if (status === 'loading') return;
     
     if (!session) {
+      console.log('[AdminDashboard] No session, redirecting to login');
       router.push('/login');
       return;
     }
 
     if (session.user?.role !== 'admin') {
+      console.log('[AdminDashboard] Not admin role:', session.user?.role);
       toast({
         title: 'Access Denied',
         description: 'This dashboard is only for administrators.',
@@ -134,6 +138,7 @@ export default function AdminDashboard() {
       return;
     }
 
+    console.log('[AdminDashboard] Access granted, fetching data');
     fetchDashboardData();
   }, [session, status, router]);
 

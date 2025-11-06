@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from '@/lib/authClient';
+import { useSession, authFetch } from '@/lib/authClient';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -136,13 +136,13 @@ export default function MealsPage() {
     }
 
     try {
-      const response = await fetch('/api/orders/place', {
+      const response = await authFetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           mealId,
           quantity: 1,
-          paymentStatus: 'paid',
+          deliveryNotes: '',
         }),
       });
 
@@ -152,10 +152,10 @@ export default function MealsPage() {
           description: `Successfully ordered ${mealName}`,
         });
       } else {
-        const error = await response.json();
+        const error = await response.text();
         toast({
           title: 'Order Failed',
-          description: error.error || 'Failed to place order',
+          description: error || 'Failed to place order',
           variant: 'destructive',
         });
       }
