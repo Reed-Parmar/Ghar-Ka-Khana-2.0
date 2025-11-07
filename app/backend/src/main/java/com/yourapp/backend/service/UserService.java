@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.yourapp.backend.dto.RegisterRequest;
 import com.yourapp.backend.model.User;
+import com.yourapp.backend.model.Chef;
 import com.yourapp.backend.repository.UserRepository;
+import com.yourapp.backend.repository.ChefRepository;
 
 /**
  * Service layer for User-related business logic
@@ -40,6 +42,12 @@ public class UserService {
     private final UserRepository userRepository;
     
     /**
+     * ChefRepository for chef-specific database operations
+     * Required for creating Chef documents when users register with role="chef"
+     */
+    private final ChefRepository chefRepository;
+    
+    /**
      * BCryptPasswordEncoder for hashing passwords
      * 
      * Why BCrypt?
@@ -57,16 +65,18 @@ public class UserService {
     /**
      * Constructor for dependency injection
      * 
-     * Spring automatically calls this constructor and injects UserRepository
+     * Spring automatically calls this constructor and injects repositories
      * This is called "Constructor Injection" - best practice because:
      * 1. Makes dependencies explicit and required
      * 2. Allows final fields (immutable)
      * 3. Easier to test (can mock dependencies in unit tests)
      * 
      * @param userRepository Repository injected by Spring
+     * @param chefRepository Repository injected by Spring
      */
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ChefRepository chefRepository) {
         this.userRepository = userRepository;
+        this.chefRepository = chefRepository;
     }
 
     // ===== BUSINESS METHODS =====
@@ -118,7 +128,22 @@ public class UserService {
         // userRepository.save() inserts the document
         // MongoDB auto-generates the _id field
         // @CreatedDate and @LastModifiedDate are automatically set by Spring auditing
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        
+        // Step 7: If role is "chef", create corresponding Chef document
+        // This implements the dual-document architecture:
+        // - User collection: Stores authentication data and role
+        // - Chef collection: Stores chef-specific data and approval status
+        if ("chef".equals(savedUser.getRole())) {
+            Chef chef = new Chef();
+            chef.setUserId(savedUser.getId());  // Reference to User document
+            chef.setName(savedUser.getName());   // Copy name for convenience
+            chef.setBio("");                     // Empty bio, chef can update later
+            chef.setApproved(false);             // Requires admin approval before active
+            chefRepository.save(chef);
+        }
+        
+        return savedUser;
     }
     
     /**
