@@ -55,7 +55,7 @@ export default function LoginPage() {
         setTimeout(async () => {
           try {
             console.log('Attempting to fetch user profile...');
-            const response = await fetch('/api/user/profile');
+            const response = await fetch('/api/user/me');
             console.log('Profile API response status:', response.status);
             
             if (response.ok) {
@@ -63,13 +63,39 @@ export default function LoginPage() {
               const userRole = data.user.role;
               console.log('User role from API:', userRole);
               
+              // For chefs, check if they're approved
+              if (userRole === 'chef') {
+                if (!data.chef) {
+                  // Chef document doesn't exist - this shouldn't happen but handle it
+                  toast({
+                    title: 'Account Setup Required',
+                    description: 'Your chef account is being set up. Please try again in a moment.',
+                    variant: 'destructive',
+                  });
+                  window.location.href = '/';
+                  return;
+                }
+                
+                if (!data.chef.approved) {
+                  toast({
+                    title: 'Approval Pending',
+                    description: 'Your chef account is pending admin approval. You will be notified once approved.',
+                    variant: 'destructive',
+                  });
+                  window.location.href = '/';
+                  return;
+                }
+                
+                // Chef is approved, redirect to chef dashboard
+                console.log('Redirecting to chef dashboard');
+                window.location.href = '/chef/dashboard';
+                return;
+              }
+              
               // Redirect based on user role
               if (userRole === 'admin') {
                 console.log('Redirecting to admin dashboard');
                 window.location.href = '/admin/dashboard';
-              } else if (userRole === 'chef') {
-                console.log('Redirecting to chef dashboard');
-                window.location.href = '/chef/dashboard';
               } else if (userRole === 'student') {
                 console.log('Redirecting to student dashboard');
                 window.location.href = '/student/dashboard';

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import connectDB from '@/lib/mongodb';
 import User, { UserRole } from '@/lib/models/User';
+import Chef from '@/lib/models/Chef';
 import { z } from 'zod';
 
 // Force Node.js runtime
@@ -46,6 +47,16 @@ export async function POST(request: NextRequest) {
       role: validatedData.role,
       provider: 'credentials',
     });
+
+    // If user is a chef, create Chef document
+    if (validatedData.role === 'chef') {
+      await Chef.create({
+        userId: user._id,
+        name: user.name,
+        bio: '',
+        approved: false, // Requires admin approval
+      });
+    }
 
     // Remove password from response
     const { password, ...userWithoutPassword } = user.toObject();

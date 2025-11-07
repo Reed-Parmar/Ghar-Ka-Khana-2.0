@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { MongoClient, ObjectId } from 'mongodb';
-
-const client = new MongoClient(process.env.MONGODB_URI as string);
+import connectDB from '@/lib/mongodb';
+import Chef from '@/lib/models/Chef';
 
 export async function PATCH(
   request: NextRequest,
@@ -27,24 +26,19 @@ export async function PATCH(
       );
     }
 
-    await client.connect();
-    const db = client.db('ghar-ka-khana');
+    await connectDB();
     
-    const result = await db.collection('users').updateOne(
+    // Update the Chef document
+    const chef = await Chef.findByIdAndUpdate(
+      params.chefId,
       { 
-        _id: new ObjectId(params.chefId),
-        role: 'chef'
+        approved: isApproved,
+        updatedAt: new Date()
       },
-      { 
-        $set: { 
-          isApproved,
-          approvedAt: isApproved ? new Date().toISOString() : null,
-          updatedAt: new Date().toISOString()
-        }
-      }
+      { new: true }
     );
 
-    if (result.matchedCount === 0) {
+    if (!chef) {
       return NextResponse.json(
         { error: 'Chef not found' },
         { status: 404 }
@@ -53,7 +47,11 @@ export async function PATCH(
 
     return NextResponse.json({
       success: true,
-      message: `Chef ${isApproved ? 'approved' : 'rejected'} successfully`
+      message: `Chef ${isApproved ? 'approved' : 'rejected'} successfully`,
+      chef: {
+        id: chef._id.toString(),
+        approved: chef.approved
+      }
     });
 
   } catch (error) {
@@ -62,7 +60,5 @@ export async function PATCH(
       { error: 'Failed to update chef approval' },
       { status: 500 }
     );
-  } finally {
-    await client.close();
   }
 }

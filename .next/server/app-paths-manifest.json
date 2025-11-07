@@ -1,10 +1,20 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/login/page": "app/login/page.js",
+  "/register/page": "app/register/page.js",
+  "/api/auth/register/route": "app/api/auth/register/route.js",
+  "/api/user/me/route": "app/api/user/me/route.js",
+  "/chef/dashboard/page": "app/chef/dashboard/page.js",
+  "/meals/page": "app/meals/page.js",
+  "/student/dashboard/page": "app/student/dashboard/page.js",
+  "/api/user/profile/route": "app/api/user/profile/route.js",
+  "/api/orders/user/[userId]/route": "app/api/orders/user/[userId]/route.js",
+  "/api/meals/all/route": "app/api/meals/all/route.js",
+  "/api/orders/place/route": "app/api/orders/place/route.js",
+  "/page": "app/page.js",
   "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/api/admin/chefs/route": "app/api/admin/chefs/route.js",
   "/api/admin/users/route": "app/api/admin/users/route.js",
-  "/api/admin/orders/route": "app/api/admin/orders/route.js",
-  "/api/admin/stats/route": "app/api/admin/stats/route.js"
+  "/api/admin/stats/route": "app/api/admin/stats/route.js",
+  "/api/admin/chefs/route": "app/api/admin/chefs/route.js",
+  "/api/admin/orders/route": "app/api/admin/orders/route.js"
 }

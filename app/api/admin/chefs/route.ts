@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { MongoClient } from 'mongodb';
-
-const client = new MongoClient(process.env.MONGODB_URI as string);
+import connectDB from '@/lib/mongodb';
+import Chef from '@/lib/models/Chef';
+import User from '@/lib/models/User';
+import Meal from '@/lib/models/Meal';
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,52 +16,34 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    await client.connect();
-    const db = client.db('ghar-ka-khana');
+    await connectDB();
     
-    // Get all chef users with their stats using aggregation
-    const chefsWithStats = await db.collection('users').aggregate([
-      {
-        $match: { role: 'chef' }
-      },
-      {
-        $lookup: {
-          from: 'meals',
-          localField: '_id',
-          foreignField: 'chef',
-          as: 'meals'
-        }
-      },
-      {
-        $lookup: {
-          from: 'orders',
-          localField: '_id',
-          foreignField: 'chef',
-          as: 'orders'
-        }
-      },
-      {
-        $project: {
-          id: { $toString: '$_id' },
-          name: 1,
-          email: 1,
-          isApproved: { $ifNull: ['$isApproved', true] },
-          totalMeals: { $size: '$meals' },
-          totalOrders: { $size: '$orders' },
-          revenue: {
-            $sum: {
-              $map: {
-                input: '$orders',
-                as: 'order',
-                in: { $ifNull: ['$$order.totalPrice', 0] }
-              }
-            }
-          },
-          rating: { $ifNull: ['$rating', 0] },
-          createdAt: { $ifNull: ['$createdAt', new Date()] }
-        }
-      }
-    ]).toArray();
+    // Get all chefs with their associated user data
+    const chefs = await Chef.find()
+      .populate('userId', 'name email createdAt')
+      .lean();
+
+    // Get meal counts for each chef
+    const chefsWithStats = await Promise.all(
+      chefs.map(async (chef: any) => {
+        const mealCount = await Meal.countDocuments({ chef: chef.userId._id });
+        
+        return {
+          id: chef._id.toString(),
+          userId: chef.userId._id.toString(),
+          name: chef.name,
+          email: chef.userId.email,
+          bio: chef.bio,
+          approved: chef.approved,
+          isApproved: chef.approved, // For backward compatibility
+          totalMeals: mealCount,
+          totalOrders: 0, // Will be calculated when orders are implemented
+          revenue: 0,
+          rating: 0,
+          createdAt: chef.createdAt || chef.userId.createdAt,
+        };
+      })
+    );
 
     return NextResponse.json({
       success: true,
@@ -73,7 +56,5 @@ export async function GET(request: NextRequest) {
       { error: 'Failed to fetch chefs' },
       { status: 500 }
     );
-  } finally {
-    await client.close();
   }
 }
